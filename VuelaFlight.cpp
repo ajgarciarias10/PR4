@@ -123,13 +123,13 @@ void VuelaFlight::addAerolinea(string icao,Aerolinea aerolinea) {
  * @return
  */
 Aerolinea &VuelaFlight::buscaAerolinea(std::string icaoAerolinea) {
-    Aerolinea aerol;
-    aerol.setIcao(icaoAerolinea);
     map<string,Aerolinea>:: iterator it = airlines.find(icaoAerolinea);
-    if(!(&(*it))){
+    //El metodo find devuelve end en caso de que no encuentra nada
+    if(it == airlines.end()){
         throw std::invalid_argument("No se ha encontrado la aerolinea");
     }
-    return  &(*it->second);
+    //Devolvemos en caso contrario si la ha encontrado
+    return  it->second;
 
 }
 /**
@@ -142,8 +142,9 @@ vector<Aerolinea*> VuelaFlight::buscaAerolineasActiva() {
     //Este sera el vector de aerolineas activas
     vector<Aerolinea*> aeroActivas;
     for (itBuscaAerolinea = airlines.begin(); itBuscaAerolinea != airlines.end(); ++itBuscaAerolinea) {
-        if(itBuscaAerolinea->second->isActivo()){
-            aeroActivas.insert(&(itBuscaAerolinea->second));
+        if(itBuscaAerolinea->second.isActivo()){
+            //Devolvemos la direccion de memoria de la aerolinea activa
+            aeroActivas.push_back(&(itBuscaAerolinea->second));
         }
     }
 
@@ -160,8 +161,8 @@ vector<Aerolinea*> VuelaFlight::getAerolineasPais(std::string idPais) {
     map<string,Aerolinea>::iterator  itBuscaAero ;
     vector<Aerolinea*> aerolineaPais;
     for (itBuscaAero = airlines.begin(); itBuscaAero != airlines.end(); ++itBuscaAero) {
-        if(itBuscaAero->second->getPais() == idPais){
-            aerolineaPais.insert(&(itBuscaAero->second));
+        if(itBuscaAero->second.getPais() == idPais){
+            aerolineaPais.push_back(&(itBuscaAero->second));
         }
     }
 

@@ -143,7 +143,7 @@ int main(int argc, const char * argv[]) {
 
 #pragma endregion
 
-    cout<< "Tamaño Aerolineas: " << vl.tamaWork() <<endl
+    cout<< "Tamaño Aerolineas: " << vl.tamaAirlines() <<endl
          << "Tamaño aeropuertos: " << vl.tamaAeropuertos() << endl
          << "Tamaño rutas: " << vl.tamaRutas() << endl <<endl;
 
@@ -159,9 +159,9 @@ try{
 #pragma  region Muestra todas las aerolíneas activas.
 
     cout<<endl<<"--------------------------Aerolíneas activas--------------------------"<<endl<<endl;
-    VDinamico<Aerolinea*> vectorActivas(vl.buscaAerolineasActiva());
-    cout<<"Numero de aerolineas activas: "<< vectorActivas.tamlog()<<endl<<endl;
-    for (int i = 0; i < vectorActivas.tamlog(); ++i) {
+    vector<Aerolinea*> vectorActivas(vl.buscaAerolineasActiva());
+    cout<<"Numero de aerolineas activas: "<< vectorActivas.size()<<endl<<endl;
+    for (int i = 0; i < vectorActivas.size(); ++i) {
         string activo = " ";
         vectorActivas[i]->isActivo() ? activo = "Si" : activo ="No";
         cout<< "Id: "<< vectorActivas[i]->getId() << " Nombre: "<< vectorActivas[i]->getNombre()<< " Pais: " << vectorActivas[i]->getPais() <<" Activo: "<< activo <<endl;
@@ -173,9 +173,9 @@ try{
 
     cout<<endl<<"------------------------------Aeropuertos (origen) en los que opera Iberia Airlines-------------------------------"<<endl<<endl;
     Aerolinea iberiaAirlines = vl.buscaAerolinea("IBE");
-    VDinamico<Aeropuerto*> aeropuertosIberia  =  iberiaAirlines.getAeropuertosOrig();
-    cout<<"Numero de aeropuertos que operan con iberia: "<< aeropuertosIberia.tamlog()<<endl<<endl;
-    for (int j = 0; j < aeropuertosIberia.tamlog(); ++j) {
+    vector<Aeropuerto*> aeropuertosIberia  =  iberiaAirlines.getAeropuertosOrig();
+    cout<<"Numero de aeropuertos que operan con iberia: "<< aeropuertosIberia.size()<<endl<<endl;
+    for (int j = 0; j < aeropuertosIberia.size(); ++j) {
         cout<<"Id: "<<aeropuertosIberia[j]->getId()<<" Aeropuerto: "<< aeropuertosIberia[j]->getNombre() <<  " Iata : "
             <<  aeropuertosIberia[j]->getIata() << " Iso Pais: " << aeropuertosIberia[j]->getIsoPais() <<endl;
 
@@ -187,16 +187,16 @@ try{
 
     cout<<endl<<"-----------------Rutas operadas por Iberia Airlines con origen en el aeropuerto de Málaga(AGP)-----------------"<<endl<<endl;
     //AeroRutasAGP
-    VDinamico<Ruta*> aerorutasAGP = iberiaAirlines.getRutasAeropuerto("AGP");
-    VDinamico<Ruta*> aerorutasMalaga;
-    for (int j = 0; j < aerorutasAGP.tamlog(); ++j) {
+    deque<Ruta*> aerorutasAGP = iberiaAirlines.getRutasAeropuerto("AGP");
+    deque<Ruta*> aerorutasMalaga;
+    for (int j = 0; j < aerorutasAGP.size(); ++j) {
         if(aerorutasAGP[j]->getOrigin()->getNombre() == "Málaga-Costa del Sol Airport"){
-            aerorutasMalaga.insertar(aerorutasAGP[j]);
+            aerorutasMalaga.push_back(aerorutasAGP[j]);
         }
     }
 
-    cout<<"Numero de rutas: "<< aerorutasMalaga.tamlog()<<endl<<endl;
-    for (int i = 0; i < aerorutasMalaga.tamlog(); ++i) {
+    cout<<"Numero de rutas: "<< aerorutasMalaga.size()<<endl<<endl;
+    for (int i = 0; i < aerorutasMalaga.size(); ++i) {
         cout<<"Origen: "<<aerorutasMalaga[i]->getOrigin()->getNombre()<<"---> Destino: "<< aerorutasMalaga[i]->getDestination()->getNombre() <<endl;
 
     }
@@ -206,9 +206,9 @@ try{
 #pragma region Aerolíneas que operan en España.
 
         cout<<endl<<"------------------------------Aerolíneas que operan en España------------------------------"<<endl<<endl;
-        VDinamico<Aerolinea*> aerolineaEsp =  vl.getAerolineasPais("Spain");
-        cout<<"Numero de aerolineas que operan en España: "<<aerolineaEsp.tamlog()<<endl<<endl;
-        for (int i = 0; i < aerolineaEsp.tamlog(); ++i) {
+        vector<Aerolinea*> aerolineaEsp =  vl.getAerolineasPais("Spain");
+        cout<<"Numero de aerolineas que operan en España: "<<aerolineaEsp.size()<<endl<<endl;
+        for (int i = 0; i < aerolineaEsp.size(); ++i) {
             cout<< "Id: "<< aerolineaEsp[i]->getId() << " Nombre: "<< aerolineaEsp[i]->getNombre()<< " Pais: " << aerolineaEsp[i]->getPais() <<endl;
         }
 

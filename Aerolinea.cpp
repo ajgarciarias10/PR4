@@ -22,18 +22,19 @@ Aerolinea::Aerolinea(int id, std::string icao, std::string nombre, std::string p
 vector<Aeropuerto*> Aerolinea::getAeropuertosOrig() {
     //Creo un vector dinamico de aeropuertos que en el que voy a devolver los aeropuertos
     vector<Aeropuerto *> vAeroOrig;
-    //Creo un mapa donde voy a ver si un dato esta repetido o no
-    map<string,Aeropuerto*> arbolDeAeroOrig;
+    //Creo un map con los aeropuertos de origen
+    map<string,Aeropuerto>  mapDeAeroOrig;
     //Obtengo   aerorutas
-    vector<Ruta*> aerorutasMetodo = getAerorutas();
+    deque<Ruta*> aerorutasMetodo = getAerorutas();
     for (int i = 0; i < aerorutasMetodo.size(); ++i) {
-        Aeropuerto *aeropuerto = aerorutasMetodo[i]->getOrigin();
-        //Si en el árbol el dato no esta repetido
-            if(!arbolDeAeroOrig.find(aeropuerto)){
-                //Insertamos en el arbol
-                arbolDeAeroOrig.insert(aeropuerto->getIata(),aeropuerto);
-                vAeroOrig.insertar(aeropuerto);
-            }
+        //Obtenemos los aeropuertos de origen
+        Aeropuerto aeropuerto = *aerorutasMetodo[i]->getOrigin();
+        //Como estamos utilizando la estructura stl map no se repetiran los aeropuertos de origen al insertar
+        mapDeAeroOrig.insert(pair<string,Aeropuerto>(aeropuerto.getIata(),aeropuerto));
+    }
+    map<string,Aeropuerto>::iterator itMapDeAeroOrig;
+    for (itMapDeAeroOrig = mapDeAeroOrig.begin(); itMapDeAeroOrig != mapDeAeroOrig.end() ; ++itMapDeAeroOrig) {
+        vAeroOrig.push_back(&itMapDeAeroOrig->second);
     }
 
     return  vAeroOrig;
@@ -44,16 +45,16 @@ vector<Aeropuerto*> Aerolinea::getAeropuertosOrig() {
  * @param iataAirport
  * @return
  */
-VDinamico<Ruta*> Aerolinea::getRutasAeropuerto(std::string iataAirport) {
+deque<Ruta*> Aerolinea::getRutasAeropuerto(std::string iataAirport) {
     //Vector que vamos a llenar
-    VDinamico<Ruta*> vRutasAero;
+    deque<Ruta*> vRutasAero;
     //Recorremos las rutas de la aerolinea
-    for (int i = 0; i < aerorutas.tamlog(); ++i) {
+    for (int i = 0; i < aerorutas.size(); ++i) {
         string iataOrig = aerorutas[i]->getOrigin()->getIata();
         string iataDest = aerorutas[i]->getDestination()->getIata();
         //Si tiene ese iata  insertamos  la ruta
             if(iataOrig == iataAirport ||iataDest == iataAirport ){
-                    vRutasAero.insertar(aerorutas[i]);
+                    vRutasAero.push_back(aerorutas[i]);
             }
     }
     //Devolvemos el vector de rutas
@@ -64,7 +65,7 @@ VDinamico<Ruta*> Aerolinea::getRutasAeropuerto(std::string iataAirport) {
  * @param r
  */
 void Aerolinea::linkAerolRuta(Ruta *r) {
-    this->aerorutas.insertar(r);
+    this->aerorutas.push_back(r);
 }
 /**
  * @brief Destructor de Aerolinea
@@ -165,7 +166,7 @@ void Aerolinea::setActivo(bool activo) {
  * @brief Getter Con Acceso al private aerorutas
  * @return
  */
-const VDinamico<Ruta *> &Aerolinea::getAerorutas() const {
+const deque<Ruta *> &Aerolinea::getAerorutas() const {
     return aerorutas;
 }
 /**
@@ -173,7 +174,7 @@ const VDinamico<Ruta *> &Aerolinea::getAerorutas() const {
  * @param aerorutas
  */
 
-void Aerolinea::setAerorutas(const VDinamico<Ruta *> &aerorutas) {
+void Aerolinea::setAerorutas(const deque<Ruta *> &aerorutas) {
     Aerolinea::aerorutas = aerorutas;
 }
 
