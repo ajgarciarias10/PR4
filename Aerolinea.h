@@ -15,7 +15,7 @@ private:
     string nombre;
     string pais;
     bool activo;
-    VDinamico<Ruta*> aerorutas;
+    vector<Ruta*> aerorutas;
 public:
     //Constructor por defecto
     Aerolinea();
@@ -26,9 +26,9 @@ public:
     //Destrcutor
     ~Aerolinea();
     //Metodo que devuelve los aeropuertos de origen
-    VDinamico<Aeropuerto*>getAeropuertosOrig();
+    vector<Aeropuerto*>getAeropuertosOrig();
     //Metodo que devuelve todas las rutas cuya aeropuerto de origen tenga ese mismo iata
-    VDinamico<Ruta*> getRutasAeropuerto(string iataAirport);
+    vector<Ruta*> getRutasAeropuerto(string iataAirport);
     //Enlaza Aerolina con Aeroroutes
     void linkAerolRuta(Ruta *r);
     //Operator<
@@ -56,9 +56,9 @@ public:
     //Setter Activo
     void setActivo(bool activo);
     //Getter de variable privada aeroruta
-    const VDinamico<Ruta *> &getAerorutas() const;
+    const vector<Ruta *> &getAerorutas() const;
     //Setter Aerorutas
-    void setAerorutas(const VDinamico<Ruta *> &aerorutas);
+    void setAerorutas(const vector<Ruta *> &aerorutas);
 };
 
 

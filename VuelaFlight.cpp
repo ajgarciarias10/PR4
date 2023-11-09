@@ -99,7 +99,7 @@ void VuelaFlight::addNuevaRuta(Aeropuerto* AerOrig, Aeropuerto* AerDest, Aerolin
  * @param vl
  */
 
-VuelaFlight::VuelaFlight(const VuelaFlight &vl) : aeropuertos(vl.aeropuertos), rutas(vl.rutas),work(vl.work){}
+VuelaFlight::VuelaFlight(const VuelaFlight &vl) : aeropuertos(vl.aeropuertos), rutas(vl.rutas),airlines(vl.airlines){}
 /**
  * @brief Añade aeropuerto
  * @param aeropuerto
@@ -125,27 +125,29 @@ void VuelaFlight::addAerolinea(string icao,Aerolinea aerolinea) {
 Aerolinea &VuelaFlight::buscaAerolinea(std::string icaoAerolinea) {
     Aerolinea aerol;
     aerol.setIcao(icaoAerolinea);
-    Aerolinea *t = airlines.find(aerol);
-    if(!t){
+    map<string,Aerolinea>:: iterator it = airlines.find(icaoAerolinea);
+    if(!(&(*it))){
         throw std::invalid_argument("No se ha encontrado la aerolinea");
     }
-    return  *t;
+    return  &(*it->second);
 
 }
 /**
  * @brief Metodo que busca las Aerolineas Activas
  * @return
  */
-VDinamico<Aerolinea*> VuelaFlight::buscaAerolineasActiva() {
-    VDinamico<Aerolinea*> buscaAerolinea = work.recorreInorden();
-    VDinamico<Aerolinea*> devuelveAerolinea;
-    for (int i = 0; i < buscaAerolinea.tamlog(); ++i) {
-        if(buscaAerolinea[i]->isActivo()){
-            devuelveAerolinea.insertar(buscaAerolinea[i]);
+vector<Aerolinea*> VuelaFlight::buscaAerolineasActiva() {
+    //Utilizamos un iterador en el mapa
+    map<string,Aerolinea>::iterator itBuscaAerolinea  ;
+    //Este sera el vector de aerolineas activas
+    vector<Aerolinea*> aeroActivas;
+    for (itBuscaAerolinea = airlines.begin(); itBuscaAerolinea != airlines.end(); ++itBuscaAerolinea) {
+        if(itBuscaAerolinea->second->isActivo()){
+            aeroActivas.insert(&(itBuscaAerolinea->second));
         }
     }
 
-    return  devuelveAerolinea;
+    return  aeroActivas;
 
 }
 /**
@@ -153,16 +155,17 @@ VDinamico<Aerolinea*> VuelaFlight::buscaAerolineasActiva() {
  * @param idPais
  * @return
  */
-VDinamico<Aerolinea*> VuelaFlight::getAerolineasPais(std::string idPais) {
-    VDinamico<Aerolinea*> buscaAerolinea = work.recorreInorden();
-    VDinamico<Aerolinea*> devuelveAerolinea;
-    for (int i = 0; i < buscaAerolinea.tamlog(); ++i) {
-        if(buscaAerolinea[i]->getPais() == idPais){
-            devuelveAerolinea.insertar(buscaAerolinea[i]);
+vector<Aerolinea*> VuelaFlight::getAerolineasPais(std::string idPais) {
+    //Idem aerolineas Activas
+    map<string,Aerolinea>::iterator  itBuscaAero ;
+    vector<Aerolinea*> aerolineaPais;
+    for (itBuscaAero = airlines.begin(); itBuscaAero != airlines.end(); ++itBuscaAero) {
+        if(itBuscaAero->second->getPais() == idPais){
+            aerolineaPais.insert(&(itBuscaAero->second));
         }
     }
 
-    return  devuelveAerolinea;
+    return  aerolineaPais;
 }
 /**
  * @brief Metodo que carga las rutas que leemos
@@ -171,11 +174,8 @@ VDinamico<Aerolinea*> VuelaFlight::getAerolineasPais(std::string idPais) {
  * @param destino2
  */
 void VuelaFlight::cargarRutas(string icaoRuta,string origen2, string destino2){
-#pragma  region   Buscar en tiempo logarítmico la aerolínea que hace la ruta en VuelaFlight::work
-    Aerolinea aero2;
-    aero2.setIcao(icaoRuta);
-    Aerolinea *aerolineaEncontrada;
-    aerolineaEncontrada = airlines.busquedaRecursiva(aero2);
+#pragma  region   Buscar en tiempo logarítmico la aerolínea que hace la ruta en VuelaFlight::airlines en este caso en el mapa
+    map<string ,Aerolinea>::iterator aerolineaEncontrada= airlines.find(icaoRuta);
 #pragma  endregion
 #pragma region Buscar en tiempo logarítmico en  PR2 + añadir nueva ruta
     //Declaro un aeropuerto
@@ -183,7 +183,6 @@ void VuelaFlight::cargarRutas(string icaoRuta,string origen2, string destino2){
     //Seteo su iata de origen
     aero.setIata(origen2);
     //Compruebo la posicion dentro del vector dinamico en el que esta Tanto la ruta de origen con la de destino
-    //TODO
     //Y así descubro el aeropuerto ORIGEN
     vector<Aeropuerto>::iterator  origen;
     origen = std::lower_bound(aeropuertos.begin(), aeropuertos.end(),aero);
@@ -193,9 +192,9 @@ void VuelaFlight::cargarRutas(string icaoRuta,string origen2, string destino2){
     aero.setIata(destino2); 
     //Y así descubro el aeropuerto destino
     destino= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),aero);;
-    if(origen !=-1 && posDest !=-1 && aerolineaEncontrada){
+    if(&origen && &destino  && &aerolineaEncontrada){
         //Añadimos nueva ruta a partir del origen el destino y el icao
-        addNuevaRuta(&aeropuertos[posOrigen],&aeropuertos[posDest],aerolineaEncontrada);
+        addNuevaRuta(&(*origen), &(*destino),&aerolineaEncontrada->second);
     }
 }
 /**

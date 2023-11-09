@@ -33,9 +33,9 @@ public:
     //BuscarRutaDeOrigenDestino
     Ruta& buscarRutasOriDeS(string idAerOrig,string idAerDest);
     //BuscarRutasDeOrigen
-    ListaEnlazada<Ruta*> buscarRutasOrigen (string idAerOrig);
+    list<Ruta*> buscarRutasOrigen (string idAerOrig);
     //Buscar AeropuertoPais
-    VDinamico<Aeropuerto*> buscarAeropuertoPais(string pais);
+    vector<Aeropuerto*> buscarAeropuertoPais(string pais);
     //AñadirNuevoAeropuerto
     void añadeAeropuerto(const Aeropuerto aeropuerto);
     //AñadirNuevaRuta
@@ -45,9 +45,9 @@ public:
     //Buscar Aerolinea por icao
     Aerolinea &buscaAerolinea(string icaoAerolinea);
     //Buscar Aerolinea activa
-    VDinamico<Aerolinea*> buscaAerolineasActiva();
+    vector<Aerolinea*> buscaAerolineasActiva();
     //Metodo que obtiene la aerolineas por el Pais
-    VDinamico<Aerolinea*> getAerolineasPais(string idPais);
+    vector<Aerolinea*> getAerolineasPais(string idPais);
     //Metodo que Carga las Rutas
     void cargarRutas(string icaoRuta,string origen2, string destino2);
     //Metodo que ordenar Aeropuertos

@@ -1,6 +1,5 @@
 #include "Aerolinea.h"
 #include "Ruta.h"
-#include "AVL.h"
 /**
  * @brief Constructor por defecto
  */
@@ -20,19 +19,19 @@ Aerolinea::Aerolinea(int id, std::string icao, std::string nombre, std::string p
  * @brief Metodo que obtiene los aeropuerto de origen
  * @return
  */
-VDinamico<Aeropuerto*> Aerolinea::getAeropuertosOrig() {
+vector<Aeropuerto*> Aerolinea::getAeropuertosOrig() {
     //Creo un vector dinamico de aeropuertos que en el que voy a devolver los aeropuertos
-    VDinamico<Aeropuerto *> vAeroOrig;
-    //Creo un arbol para almacenar los aeropuertos de origen
-    AVL<Aeropuerto *> arbolDeAeroOrig;
+    vector<Aeropuerto *> vAeroOrig;
+    //Creo un mapa donde voy a ver si un dato esta repetido o no
+    map<string,Aeropuerto*> arbolDeAeroOrig;
     //Obtengo   aerorutas
-    VDinamico<Ruta*> aerorutasMetodo = getAerorutas();
-    for (int i = 0; i < aerorutasMetodo.tamlog(); ++i) {
+    vector<Ruta*> aerorutasMetodo = getAerorutas();
+    for (int i = 0; i < aerorutasMetodo.size(); ++i) {
         Aeropuerto *aeropuerto = aerorutasMetodo[i]->getOrigin();
         //Si en el árbol el dato no esta repetido
-            if(!arbolDeAeroOrig.busquedaRecursiva(aeropuerto)){
+            if(!arbolDeAeroOrig.find(aeropuerto)){
                 //Insertamos en el arbol
-                arbolDeAeroOrig.insertar(aeropuerto);
+                arbolDeAeroOrig.insert(aeropuerto->getIata(),aeropuerto);
                 vAeroOrig.insertar(aeropuerto);
             }
     }
