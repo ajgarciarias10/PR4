@@ -3,17 +3,17 @@
 /**
  * @brief Constructor por defecto
  */
-Aerolinea::Aerolinea():id(0),icao(""),nombre(""),pais(""),activo(false),aerorutas(){}
+Aerolinea::Aerolinea():id(0),icao(""),nombre(""),pais(""),activo(false),aerorutas(),flights(){}
 /**
  * @brief Constructor copia
  * @param orig
  */
-Aerolinea::Aerolinea(const Aerolinea &orig):id(orig.id),icao(orig.icao),nombre(orig.nombre),pais(orig.pais),activo(orig.activo),aerorutas(orig.aerorutas) {}
+Aerolinea::Aerolinea(const Aerolinea &orig):id(orig.id),icao(orig.icao),nombre(orig.nombre),pais(orig.pais),activo(orig.activo),aerorutas(orig.aerorutas),flights(orig.flights) {}
 /**
  * @brief Constructor parametrizado
  * @param orig
  */
-Aerolinea::Aerolinea(int id, std::string icao, std::string nombre, std::string pais, bool activo):id(id),icao(icao),nombre(nombre),pais(pais),activo(activo),aerorutas() {}
+Aerolinea::Aerolinea(int id, std::string icao, std::string nombre, std::string pais, bool activo):id(id),icao(icao),nombre(nombre),pais(pais),activo(activo),aerorutas(),flights() {}
 
 /**
  * @brief Metodo que obtiene los aeropuerto de origen
@@ -184,7 +184,37 @@ void Aerolinea::setAerorutas(const deque<Ruta *> &aerorutas) {
  */
 Vuelo* Aerolinea::addVuelo(Vuelo *v) {
     //Comprobacion de nulos
-    if(v->getAerolinea() && v->getAirpDest() && v->getAirpOrigin())
+    if(v->getAerolinea() && v->getAirpDest() && v->getAirpOrigin()) {
+        //Lo añade a flights
+        multimap<string, Vuelo *>::iterator iteraVuelo;
+        //Recorremos el vector de vuelos
+        for (iteraVuelo = flights.begin();iteraVuelo!=flights.end();++iteraVuelo) {
+            //Comprobamos que el dato no esta repetido
+            if(iteraVuelo->second->getAirpOrigin()->getIata() != v->getAirpOrigin()->getIata() ||
+               iteraVuelo->second->getAirpDest()->getIata() != v->getAirpDest()->getIata() ||
+               iteraVuelo->second->getAerolinea() != v->getAerolinea())
+                //Insertamos el par
+                flights.insert(pair<string,Vuelo*>(v->getFlightNumber(),v));
+                //Comprobamos si pertenece a alguna ruta de la propia aerolinea
+                //Recorremos las rutas de la aerolinea
+                    for (int i = 0; i < aerorutas.size(); ++i) {
+                        //Si tiene ese iata  insertamos  la ruta
+                        if( aerorutas[i]->getCompany()->getIcao() == v->getAerolinea()->getIcao() ){
+                           //Añadimos el vuelo
+                           aerorutas[i]->addVuelo(v);
+                        }
+                    }
+        }
+        //Obtencion direccion de memoria del dato que hemos metido
+        for (iteraVuelo = flights.begin();iteraVuelo!=flights.end();++iteraVuelo) {
+            if(iteraVuelo->second->getAirpOrigin()->getIata() == v->getAirpOrigin()->getIata() ||
+               iteraVuelo->second->getAirpDest()->getIata() == v->getAirpDest()->getIata() ||
+               iteraVuelo->second->getAerolinea() == v->getAerolinea())
+                //Accedemos al dato y de volvemos la direccion de donde se encuentra
+                return &(*iteraVuelo->second);
+        }
+    }
+
 
     return nullptr;
 }

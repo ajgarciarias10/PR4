@@ -19,6 +19,14 @@ private:
     Aeropuerto *airpDest;
     Aerolinea *linkAero;
 public:
+    Vuelo();
+
+    Vuelo(const Vuelo &orig);
+
+    Vuelo(string flightNumber,string plane,string datoMeteo,Fecha fecha,Aeropuerto *airpOrigin,Aeropuerto *airpDest,Aerolinea *linkAero);
+
+    virtual  ~Vuelo();
+
     const string &getFlightNumber() const;
 
     const string &getPlane() const;

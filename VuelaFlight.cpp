@@ -2,7 +2,7 @@
 /**
  * @brief VuelaFlight
  */
-VuelaFlight::VuelaFlight() :aeropuertos(),rutas() {}
+VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {}
 /**
  * @brief Constructor parametrizado
  * @param vector
@@ -225,8 +225,17 @@ long VuelaFlight::tamaAirlines() {
 }
 bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, std::string iataAeroDest,
                                  std::string plane, std::string datosMeteo, Fecha f) {
+    Aerolinea aerolinea;
+    for ( Ruta ruta : rutas) {
+        if(ruta.getOrigin()->getIata() == iataAeroOrig &&
+            ruta.getDestination()->getIata() == iataAeroDest
+          ){
+            aerolinea.addVuelo(new Vuelo(fNumber,plane,datosMeteo,f,ruta.getOrigin(),ruta.getDestination()));
+        }
 
-if()
+    }
+    //iataAeroOrig,iataAeroDest
+
 
 }
 

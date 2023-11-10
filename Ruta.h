@@ -28,6 +28,12 @@ public:
     Ruta(Aerolinea *company,Aeropuerto *dest= nullptr,Aeropuerto* orig= nullptr);
     //Destructor
     virtual ~Ruta();
+    //Metodo que añade los vuelos a flightRou
+    bool addVuelo(Vuelo *v);
+    //Obtener el numero de vuelos
+    long int getNumVuelos();
+    //Get Vuelos
+    list<Vuelo*> getVuelos();
 
     Aeropuerto *getDestination() const;
 
