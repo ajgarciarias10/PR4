@@ -18,6 +18,7 @@ private:
     Aeropuerto *destination;
     Aeropuerto *origin;
     Aerolinea *company;
+    list<Vuelo*>flightRou;
 public:
     //Constructor por defecto
     Ruta();

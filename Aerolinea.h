@@ -6,6 +6,7 @@
 #include <list>
 #include <deque>
 #include <map>
+#include "Vuelo.h"
 using  namespace  std;
 class Ruta;
 class Aerolinea {
@@ -16,6 +17,7 @@ private:
     string pais;
     bool activo;
     deque<Ruta*> aerorutas;
+    multimap<string ,Vuelo*> flights;
 public:
     //Constructor por defecto
     Aerolinea();
@@ -59,6 +61,8 @@ public:
     const deque<Ruta *> &getAerorutas() const;
     //Setter Aerorutas
     void setAerorutas(const deque<Ruta *> &aerorutas);
+    //Metodo añadir Vuelo
+    Vuelo* addVuelo(Vuelo *v);
 };
 
 

@@ -177,7 +177,17 @@ const deque<Ruta *> &Aerolinea::getAerorutas() const {
 void Aerolinea::setAerorutas(const deque<Ruta *> &aerorutas) {
     Aerolinea::aerorutas = aerorutas;
 }
+/**
+ *  @brief Metodo que añade Vuelos
+ * @param v
+ * @return
+ */
+Vuelo* Aerolinea::addVuelo(Vuelo *v) {
+    //Comprobacion de nulos
+    if(v->getAerolinea() && v->getAirpDest() && v->getAirpOrigin())
 
+    return nullptr;
+}
 
 
 

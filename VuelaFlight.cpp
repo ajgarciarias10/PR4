@@ -223,4 +223,10 @@ long VuelaFlight::tamaRutas() {
 long VuelaFlight::tamaAirlines() {
     return airlines.size();
 }
+bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, std::string iataAeroDest,
+                                 std::string plane, std::string datosMeteo, Fecha f) {
+
+if()
+
+}
 

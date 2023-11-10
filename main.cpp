@@ -143,10 +143,16 @@ int main(int argc, const char * argv[]) {
 
 #pragma endregion
 
-    cout<< "Tamaño Aerolineas: " << vl.tamaAirlines() <<endl
-         << "Tamaño aeropuertos: " << vl.tamaAeropuertos() << endl
-         << "Tamaño rutas: " << vl.tamaRutas() << endl <<endl;
 
+
+#pragma  region Cargar Vuelos
+#pragma  endregion
+    cout<< "Tamaño Aerolineas: " << vl.tamaAirlines() <<endl
+        << "Tamaño aeropuertos: " << vl.tamaAeropuertos() << endl
+        << "Tamaño rutas: " << vl.tamaRutas() << endl
+        <<"Tamaño Vuelos: " << endl <<endl;
+
+/*
 try{
 #pragma region Visualiza toda la información de la aerolínea Ryanair, RYR
 
@@ -222,5 +228,6 @@ try{
     catch(bad_alloc &b){
         cout<<b.what()<<endl;
     }
+    */
     return 0;
 }

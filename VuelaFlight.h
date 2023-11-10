@@ -58,6 +58,8 @@ public:
     long tamaRutas();
     //Devuelve el tamaño del Arbol
     long tamaAirlines();
+    //Metodo para registrar un vuelo
+    bool registrarVuelo(string fNumber, string iataAeroOrig, string iataAeroDest, string plane ,string datosMeteo, Fecha f);
 
 };
 

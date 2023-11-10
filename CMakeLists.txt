@@ -3,4 +3,6 @@ project(PR4)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(PR4 main.cpp Ruta.h Ruta.cpp VuelaFlight.cpp VuelaFlight.h  UTM.cpp UTM.h Aeropuerto.cpp Aerolinea.cpp Aeropuerto.h Aerolinea.h)
+add_executable(PR4 main.cpp Ruta.h Ruta.cpp VuelaFlight.cpp VuelaFlight.h  UTM.cpp UTM.h Aeropuerto.cpp Aerolinea.cpp Aeropuerto.h Aerolinea.h
+        Vuelo.cpp
+        Vuelo.h)
