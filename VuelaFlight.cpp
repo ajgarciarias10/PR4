@@ -236,7 +236,7 @@ bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, 
     vector<Aeropuerto>::iterator iteradorDest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),dest);
 
     if(mapaEncuentraVuelos!=airlines.end() && iteradorOrig!=aeropuertos.end() && iteradorDest!=aeropuertos.end()){
-        mapaEncuentraVuelos->second.addVuelo(new Vuelo(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second)));
+     vuelo =    mapaEncuentraVuelos->second.addVuelo(new Vuelo(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second)));
     }
 
 
