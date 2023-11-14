@@ -3,6 +3,9 @@
 #include <string>
 #include "Aeropuerto.h"
 #include "Aerolinea.h"
+#include <list>
+#include "Vuelo.h"
+
 using namespace std;
 /**
  *@file Ruta.h

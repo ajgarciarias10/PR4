@@ -7,6 +7,7 @@
 #include <deque>
 #include <map>
 #include "Vuelo.h"
+#include "fecha.h"
 using  namespace  std;
 class Ruta;
 class Aerolinea {
@@ -63,6 +64,10 @@ public:
     void setAerorutas(const deque<Ruta *> &aerorutas);
     //Metodo añadir Vuelo
     Vuelo* addVuelo(Vuelo *v);
+    //Metodo para obtenerLosVuelos por flightNumber
+    vector<Vuelo*>getVuelos(string fNumber);
+    //Metodo para obtenerlos por una fecha determinada
+    vector<Vuelo*>getVuelos(Fecha fIni, Fecha fFin);
 };
 
 

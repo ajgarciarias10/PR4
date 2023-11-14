@@ -183,12 +183,13 @@ void Aerolinea::setAerorutas(const deque<Ruta *> &aerorutas) {
  * @return
  */
 Vuelo* Aerolinea::addVuelo(Vuelo *v) {
+    pair<string,Vuelo*> par;
     //Comprobacion de nulos
     if(v->getAerolinea() && v->getAirpDest() && v->getAirpOrigin()) {
         //Lo añade a flights
         multimap<string, Vuelo *>::iterator iteraVuelo;
         //Recorremos el vector de vuelos
-        for (iteraVuelo = flights.begin();iteraVuelo!=flights.end();++iteraVuelo) {
+        for (iteraVuelo = flights.begin();iteraVuelo!=flights.end();iteraVuelo++) {
             //Comprobamos que el dato no esta repetido
             if(iteraVuelo->second->getAirpOrigin()->getIata() != v->getAirpOrigin()->getIata() ||
                iteraVuelo->second->getAirpDest()->getIata() != v->getAirpDest()->getIata() ||
@@ -204,19 +205,53 @@ Vuelo* Aerolinea::addVuelo(Vuelo *v) {
                            aerorutas[i]->addVuelo(v);
                         }
                     }
+                    par = pair<string,Vuelo*>(v->getFlightNumber(),v);
         }
-        //Obtencion direccion de memoria del dato que hemos metido
-        for (iteraVuelo = flights.begin();iteraVuelo!=flights.end();++iteraVuelo) {
-            if(iteraVuelo->second->getAirpOrigin()->getIata() == v->getAirpOrigin()->getIata() ||
-               iteraVuelo->second->getAirpDest()->getIata() == v->getAirpDest()->getIata() ||
-               iteraVuelo->second->getAerolinea() == v->getAerolinea())
-                //Accedemos al dato y de volvemos la direccion de donde se encuentra
-                return &(*iteraVuelo->second);
-        }
+        return  &(*par.second);
+
+    }else{
+        return nullptr;
     }
 
 
-    return nullptr;
+
+}
+/**
+ * @brief   Metodo en el que obtenemos los vuelos en funcion de su numero de vuelo
+ * @param fNumber
+ * @return
+ */
+vector<Vuelo *> Aerolinea::getVuelos(string fNumber) {
+    vector<Vuelo*>vectorVuelos;
+    multimap<string, Vuelo *>::iterator mapaDeVuelos ;
+    for (mapaDeVuelos=  flights.find(fNumber); mapaDeVuelos !=flights.end(); mapaDeVuelos++) {
+        if(fNumber == mapaDeVuelos->first){
+            //Lo metemos en el el vector
+            //Accedemos al iterador al dato y devolvemos la direccion de memoria es decir llenamos el vector con las direccion de donde se encuentran los vuelos
+            vectorVuelos.push_back(&(*mapaDeVuelos->second));
+        }
+    }
+    return vectorVuelos;
+}
+/**
+ * @brief Metodo que obtiene todos los vuelos vuelos por su fecha de inicio y final
+ * @param fIni
+ * @param fFin
+ * @return
+ */
+
+vector<Vuelo *> Aerolinea::getVuelos(Fecha fIni, Fecha fFin) {
+    vector<Vuelo*>vectorVuelosPorFecha;
+    multimap<string, Vuelo *>::iterator mapaDeVuelos ;
+    for (mapaDeVuelos=  flights.begin(); mapaDeVuelos !=flights.end(); mapaDeVuelos++) {
+        if(!(mapaDeVuelos->second->getFecha() < fIni) && mapaDeVuelos->second->getFecha() <fFin ||
+            fIni.mismoDia(mapaDeVuelos->second->getFecha()) && fFin.mismoDia(mapaDeVuelos->second->getFecha())){
+            //Lo metemos en el el vector
+            //Accedemos al iterador al dato y devolvemos la direccion de memoria es decir llenamos el vector con las direccion de donde se encuentran los vuelos
+            vectorVuelosPorFecha.push_back(&(*mapaDeVuelos->second));
+        }
+    }
+    return vectorVuelosPorFecha;
 }
 
 

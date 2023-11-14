@@ -33,13 +33,27 @@ public:
 
     const string &getDatoMeteo() const;
 
-    const Fecha &getFecha() const;
+     Fecha &getFecha() ;
 
     Aeropuerto *getAirpOrigin() const;
 
     Aeropuerto *getAirpDest() const;
 
     Aerolinea *getAerolinea() const;
+
+    void setFlightNumber(const string &flightNumber);
+
+    void setPlane(const string &plane);
+
+    void setDatoMeteo(const string &datoMeteo);
+
+    void setFecha( Fecha &fecha);
+
+    void setAirpOrigin(Aeropuerto *airpOrigin);
+
+    void setAirpDest(Aeropuerto *airpDest);
+
+    void setLinkAero(Aerolinea *linkAero);
 };
 
 
