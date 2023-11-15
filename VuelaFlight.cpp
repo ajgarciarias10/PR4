@@ -238,7 +238,6 @@ long VuelaFlight::tamaAirlines() {
     return airlines.size();
 }
 bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, std::string iataAeroDest,std::string plane, std::string datosMeteo, Fecha f) {
-    Vuelo *vuelo;
     //Obtenemos la aeriolinea
     map<string,Aerolinea>::iterator mapaEncuentraVuelos = airlines.find(fNumber.substr(0,3));
     //Obtenemos el aeropuerto de orgigen y el de destino
@@ -249,10 +248,13 @@ bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, 
     dest.setIata(iataAeroDest);
     vector<Aeropuerto>::iterator iteradorDest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),dest);
     if(mapaEncuentraVuelos!=airlines.end() && iteradorOrig!=aeropuertos.end() && iteradorDest!=aeropuertos.end()){
-        vuelo =mapaEncuentraVuelos->second.addVuelo(*new Vuelo(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second)));
+        mapaEncuentraVuelos->second.addVuelo(*new Vuelo(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second)));
+        return true;
+    }
+    else{
+        return  false;
     }
 
-    return  vuelo;
 
 }
 /**
