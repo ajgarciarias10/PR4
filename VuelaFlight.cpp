@@ -13,6 +13,9 @@ VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {
 #pragma region Carga Ruta
     cargarRutas();
 #pragma endregion
+#pragma region Carga Vuelos
+    cargarVuelos("../infovuelos_v1.csv");
+#pragma endregion
 }
 /**
  * @brief Constructor parametrizado
@@ -257,6 +260,50 @@ bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, 
  * @param fichVuelos
  */
 void VuelaFlight::cargarVuelos(string fichVuelos) {
+    ifstream is;
+    stringstream  columnas;
+    string fila;
+#pragma region Valores Vuelos
+    string flightnumber = "";
+    string  departurePlane = "";
+    string  arrivalPlane = "";
+    string plane = "";
+    string datoMeteo = "";
+    string fecha = "";
+#pragma endregion
+    clock_t lecturaRutas = clock();
+    is.open(fichVuelos); //carpeta de proyecto
+    if ( is.good() ) {
+        while (getline(is, fila)) {
+            //¿Se ha leído una nueva fila?
+            if (fila != "") {
+                columnas.str(fila);
+                getline(columnas, flightnumber, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, departurePlane, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, arrivalPlane, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, plane, ';');
+                getline(columnas, datoMeteo, ';');
+                getline(columnas, fecha, ';');
+                                                    //Posicion //Longuitud
+                int dia = stoi(fecha.substr(0, 2));
+                int mes = stoi(fecha.substr(3, 2));
+                int año = stoi(fecha.substr(6, 2));
+                fila = "";
+                columnas.clear();
+                if(registrarVuelo(flightnumber,departurePlane,arrivalPlane,plane,datoMeteo,Fecha(dia,mes,año))){
+                    tamaVuelo++;
+                }
+            }
+        }
+
+    } else{
+        std::cout << "Error de apertura en archivo" << std::endl;
+    }
+    tamaVuelos();
+
+    is.close();
+    std::cout << "Tiempo lectura de los vuelos: " << ((clock() - lecturaRutas) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
 
 }
 /**
@@ -391,5 +438,14 @@ void VuelaFlight::cargarRutas() {
     is.close();
     std::cout << "Tiempo lectura de las rutas: " << ((clock() - lecturaRutas) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
 
+
+}
+/**
+ * @brief Devuelve el tamaño de los vuelos
+ * @param nvuelos
+ * @return
+ */
+int VuelaFlight::tamaVuelos() {
+    return tamaVuelo;
 
 }

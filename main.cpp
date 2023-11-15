@@ -20,7 +20,7 @@ int main(int argc, const char * argv[]) {
     cout<< "Tamaño Aerolineas: " << vl.tamaAirlines() <<endl
         << "Tamaño aeropuertos: " << vl.tamaAeropuertos() << endl
         << "Tamaño rutas: " << vl.tamaRutas() << endl
-        <<"Tamaño Vuelos: " << endl <<endl;
+        <<"Tamaño Vuelos: "<< vl.tamaVuelos() << endl <<endl;
 
 /*
 try{

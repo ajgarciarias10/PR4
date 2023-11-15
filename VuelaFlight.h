@@ -21,6 +21,7 @@
 
 class VuelaFlight {
 private:
+    int tamaVuelo;
     //Metodo para cargarVuelos
     void  cargarVuelos(string fichVuelos);
    //Metodo para cargarAeropuertos
@@ -73,7 +74,8 @@ public:
     long tamaAirlines();
     //Metodo para registrar un vuelo
     bool registrarVuelo(string fNumber, string iataAeroOrig, string iataAeroDest, string plane ,string datosMeteo, Fecha f);
-
+    //Metodo que devuelve el tamaño de los vuelos
+    int tamaVuelos();
 };
 
 
