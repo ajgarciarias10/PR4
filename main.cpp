@@ -20,8 +20,27 @@ int main(int argc, const char * argv[]) {
     cout<< "Tamaño Aerolineas: " << vl.tamaAirlines() <<endl
         << "Tamaño aeropuertos: " << vl.tamaAeropuertos() << endl
         << "Tamaño rutas: " << vl.tamaRutas() << endl
-        <<"Tamaño Vuelos: "<< vl.tamaVuelos() << endl <<endl;
+       <<"Tamaño Vuelos: "<< vl.tamaVuelos() << endl <<endl;
+//BuscaVuelos
+ vector<Vuelo*> vectorsito = vl.buscaVuelos("RYR5318");
+    for (int i = 0; i < vectorsito.size(); ++i) {
+        cout<< vectorsito[i]->getFlightNumber()<<endl<<endl;
 
+    }
+//Metodo BuscaAeroPor
+    Fecha f(13,04,18);
+    vector<Vuelo*> vectorsito21 = vl.vuelosOperadosPor("RYR5318",f);
+    for (int i = 0; i < vectorsito.size(); ++i) {
+        cout<< vectorsito21[i]->getDatoMeteo()<<endl<<endl;
+
+    }
+
+    set<string> vuelos = vl.buscaVuelosDestAerop("ES", "LHR");
+    set<string>::iterator setter = vuelos.begin();
+    for (setter; setter != vuelos.end(); ++setter) {
+        // Resto del bucle
+        cout<<*setter<<endl;
+    }
 /*
 try{
 #pragma region Visualiza toda la información de la aerolínea Ryanair, RYR

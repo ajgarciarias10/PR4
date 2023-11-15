@@ -306,7 +306,6 @@ void VuelaFlight::cargarVuelos(string fichVuelos) {
     is.close();
     std::cout << "Tiempo lectura de los vuelos: " << ((clock() - lecturaRutas) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
 
-
 }
 /**
  * @brief Metodo que carga los Aeropuertos
@@ -449,5 +448,58 @@ void VuelaFlight::cargarRutas() {
  */
 int VuelaFlight::tamaVuelos() {
     return tamaVuelo;
+
+}
+/**
+ * @brief Metodo que busca los vuelos y los devuelve
+ * @param fNumber
+ * @return
+ */
+vector<Vuelo *> VuelaFlight::buscaVuelos(string fNumber) {
+    map<string,Aerolinea>::iterator  iteraAirlines;
+    vector<Vuelo*> vuelosADev;
+    for (iteraAirlines = airlines.begin();iteraAirlines!=airlines.end(); ++iteraAirlines) {
+        vector<Vuelo*> aux = iteraAirlines->second.getVuelos(fNumber);
+       //Concatenamos el vector
+      vuelosADev.insert(vuelosADev.end(),aux.begin(),aux.end());
+    }
+    return vuelosADev;
+}
+/**
+ * @brief BuscaVuelosOperados por icao y fecha
+ * @param icaoAerolinea
+ * @param f
+ * @return
+ */
+vector<Vuelo *> VuelaFlight::vuelosOperadosPor(string icaoAerolinea, Fecha f) {
+    map<string,Aerolinea>::iterator  iteraAirlines;
+    vector<Vuelo*> vuelosADev;
+    for (iteraAirlines = airlines.lower_bound(icaoAerolinea);iteraAirlines!=airlines.end(); ++iteraAirlines) {
+      vector<Vuelo*> aux = iteraAirlines->second.getVuelos(f,f);
+        //Concatenamos el vector
+        vuelosADev.insert(vuelosADev.end(),aux.begin(),aux.end());
+    }
+    return vuelosADev;
+}
+
+set<string > VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroDest) {
+    //Primero obtengo los aeropuertos por pais
+    vector<Aeropuerto*> aeropuertosdePaisOrigen = buscarAeropuertoPais(paisOrig);
+    //Conjunto set con los identifcadores del vuelo
+    set<string> identificadores;
+    //Recorremos las rutas
+    list<Ruta>::iterator itrutas = rutas.begin();
+    for (int i = 0; i < aeropuertosdePaisOrigen.size(); ++i) {
+        for (itrutas;itrutas!=rutas.end(); ++itrutas) {
+            if(aeropuertosdePaisOrigen[i]->getIsoPais() == itrutas->getOrigin()->getIsoPais()
+            && itrutas->getDestination()->getIata() == iataAeroDest){
+                    for (Vuelo *vuelo : itrutas->getVuelos()) {
+                        identificadores.insert(vuelo->getFlightNumber());
+                    }
+            }
+        }
+    }
+
+    return  identificadores;
 
 }

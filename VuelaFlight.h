@@ -4,6 +4,7 @@
 #include <list>
 #include <deque>
 #include <map>
+#include <set>
 #include "time.h"
 #include <iostream>
 #include <fstream>
@@ -21,7 +22,7 @@
 
 class VuelaFlight {
 private:
-    int tamaVuelo;
+    long int tamaVuelo= 0;
     //Metodo para cargarVuelos
     void  cargarVuelos(string fichVuelos);
    //Metodo para cargarAeropuertos
@@ -76,6 +77,12 @@ public:
     bool registrarVuelo(string fNumber, string iataAeroOrig, string iataAeroDest, string plane ,string datosMeteo, Fecha f);
     //Metodo que devuelve el tamaño de los vuelos
     int tamaVuelos();
+    //Metodo que buscaLosVuelos por su numero de vuelo
+    vector<Vuelo*> buscaVuelos(string fNumber);
+    //Metodo que busca los vuelos operador por icao y fecha
+    vector<Vuelo*>vuelosOperadosPor(string icaoAerolinea,Fecha f);
+    //Metodo que busca los Vuelos de destinoPor Aeropuerto
+    set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
 };
 
 
