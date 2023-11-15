@@ -4,6 +4,11 @@
 #include <list>
 #include <deque>
 #include <map>
+#include "time.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
 #ifndef PRACTICA_2_VUELAFLIGHT_H
 #define PRACTICA_2_VUELAFLIGHT_H
 /**
@@ -16,6 +21,14 @@
 
 class VuelaFlight {
 private:
+    //Metodo para cargarVuelos
+    void  cargarVuelos(string fichVuelos);
+   //Metodo para cargarAeropuertos
+    void cargaAeropuertos();
+   //Metodo para cargarAerolineas
+    void cargaAerolineas();
+    //Metodo para cargarRutas
+    void cargarRutas();
     //Declaramos los metodo publicos y constructores
     vector<Aeropuerto> aeropuertos;
     list<Ruta> rutas;
@@ -49,7 +62,7 @@ public:
     //Metodo que obtiene la aerolineas por el Pais
     vector<Aerolinea*> getAerolineasPais(string idPais);
     //Metodo que Carga las Rutas
-    void cargarRutas(string icaoRuta,string origen2, string destino2);
+    void addRutas(string icaoRuta, string origen2, string destino2);
     //Metodo que ordenar Aeropuertos
     void ordenarAeropuertos();
     //Devuelve el tamaño de aeropuertos

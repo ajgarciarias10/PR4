@@ -63,7 +63,7 @@ public:
     //Setter Aerorutas
     void setAerorutas(const deque<Ruta *> &aerorutas);
     //Metodo añadir Vuelo
-    Vuelo* addVuelo(Vuelo *v);
+    Vuelo* addVuelo(Vuelo &v);
     //Metodo para obtenerLosVuelos por flightNumber
     vector<Vuelo*>getVuelos(string fNumber);
     //Metodo para obtenerlos por una fecha determinada

@@ -182,39 +182,27 @@ void Aerolinea::setAerorutas(const deque<Ruta *> &aerorutas) {
  * @param v
  * @return
  */
-Vuelo* Aerolinea::addVuelo(Vuelo *v) {
-    pair<string,Vuelo*> par;
+Vuelo* Aerolinea::addVuelo(Vuelo &v) {
     //Comprobacion de nulos
-    if(v->getAerolinea() && v->getAirpDest() && v->getAirpOrigin()) {
-        //Lo añade a flights
-        multimap<string, Vuelo *>::iterator iteraVuelo;
-        //Recorremos el vector de vuelos
-        for (iteraVuelo = flights.begin();iteraVuelo!=flights.end();iteraVuelo++) {
+    if(v.getAerolinea() && v.getAirpDest() && v.getAirpOrigin()) {
             //Comprobamos que el dato no esta repetido
-            if(iteraVuelo->second->getAirpOrigin()->getIata() != v->getAirpOrigin()->getIata() ||
-               iteraVuelo->second->getAirpDest()->getIata() != v->getAirpDest()->getIata() ||
-               iteraVuelo->second->getAerolinea() != v->getAerolinea())
-                //Insertamos el par
-                flights.insert(pair<string,Vuelo*>(v->getFlightNumber(),v));
-                //Comprobamos si pertenece a alguna ruta de la propia aerolinea
-                //Recorremos las rutas de la aerolinea
-                    for (int i = 0; i < aerorutas.size(); ++i) {
-                        //Si tiene ese iata  insertamos  la ruta
-                        if( aerorutas[i]->getCompany()->getIcao() == v->getAerolinea()->getIcao() ){
-                           //Añadimos el vuelo
-                           aerorutas[i]->addVuelo(v);
-                        }
-                    }
-                    par = pair<string,Vuelo*>(v->getFlightNumber(),v);
-        }
-        return  &(*par.second);
-
-    }else{
-        return nullptr;
+             pair<string,Vuelo*> par(v.getFlightNumber(),&v);
+            //Insertamos el par
+            flights.insert(par);
+            //Comprobamos si pertenece a alguna ruta de la propia aerolinea
+            //Recorremos las rutas de la aerolinea
+            for (int i = 0; i < aerorutas.size(); ++i) {
+                if(aerorutas[i]->getOrigin()->getIata() != v.getAirpOrigin()->getIata() ||
+                    aerorutas[i]->getDestination()->getIata() != v.getAirpDest()->getIata() ||
+                    aerorutas[i]->getCompany()->getIcao() != v.getAerolinea()->getIcao()){
+                    //Si tiene ese iata  insertamos  la ruta
+                    // Añadimos el vuelo
+                    aerorutas[i]->addVuelo(*par.second);
+                    return  &(*par.second);
+                }
+           }
     }
-
-
-
+    return nullptr;
 }
 /**
  * @brief   Metodo en el que obtenemos los vuelos en funcion de su numero de vuelo

@@ -39,13 +39,13 @@ void Ruta::setCompany(Aerolinea *company) {
  * @return
  */
 
-bool Ruta::addVuelo(Vuelo *v) {
+bool Ruta::addVuelo(Vuelo &v) {
     // Verificar que la aerolínea y los aeropuertos de origen y destino
     // coinciden con los de la ruta
-    if(v->getAirpOrigin()->getIata() == this->origin->getIata()&&
-       v->getAirpDest()->getIata() == this->destination->getIata()&&
-       v->getAerolinea()->getIcao() == this->company->getIcao()){
-        flightRou.push_back(v);
+    if(v.getAirpOrigin()->getIata() == this->origin->getIata()&&
+       v.getAirpDest()->getIata() == this->destination->getIata()&&
+       v.getAerolinea()->getIcao() == this->company->getIcao()){
+        flightRou.push_back(&v);
         return true;
     }
     return false;

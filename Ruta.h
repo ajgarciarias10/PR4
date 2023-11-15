@@ -32,7 +32,7 @@ public:
     //Destructor
     virtual ~Ruta();
     //Metodo que añade los vuelos a flightRou
-    bool addVuelo(Vuelo *v);
+    bool addVuelo(Vuelo &v);
     //Obtener el numero de vuelos
     long int getNumVuelos();
     //Get Vuelos

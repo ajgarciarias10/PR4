@@ -2,7 +2,18 @@
 /**
  * @brief VuelaFlight
  */
-VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {}
+VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {
+#pragma region Carga aeropuertos
+    cargaAeropuertos();
+#pragma endregion
+#pragma region  Carga Aerolineas
+    cargaAerolineas();
+
+#pragma  endregion
+#pragma region Carga Ruta
+    cargarRutas();
+#pragma endregion
+}
 /**
  * @brief Constructor parametrizado
  * @param vector
@@ -174,7 +185,7 @@ vector<Aerolinea*> VuelaFlight::getAerolineasPais(std::string idPais) {
  * @param origen2
  * @param destino2
  */
-void VuelaFlight::cargarRutas(string icaoRuta,string origen2, string destino2){
+void VuelaFlight::addRutas(string icaoRuta, string origen2, string destino2){
 #pragma  region   Buscar en tiempo logarítmico la aerolínea que hace la ruta en VuelaFlight::airlines en este caso en el mapa
     map<string ,Aerolinea>::iterator aerolineaEncontrada= airlines.find(icaoRuta);
 #pragma  endregion
@@ -234,16 +245,151 @@ bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, 
     Aeropuerto dest;
     dest.setIata(iataAeroDest);
     vector<Aeropuerto>::iterator iteradorDest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),dest);
-
     if(mapaEncuentraVuelos!=airlines.end() && iteradorOrig!=aeropuertos.end() && iteradorDest!=aeropuertos.end()){
-     vuelo =    mapaEncuentraVuelos->second.addVuelo(new Vuelo(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second)));
+        vuelo =mapaEncuentraVuelos->second.addVuelo(*new Vuelo(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second)));
     }
-
-
-    
-
 
     return  vuelo;
 
 }
+/**
+ * @brief Metodo para cargar Vuelos pasandole un ficheroVuelos
+ * @param fichVuelos
+ */
+void VuelaFlight::cargarVuelos(string fichVuelos) {
 
+}
+/**
+ * @brief Metodo que carga los Aeropuertos
+ */
+void VuelaFlight::cargaAeropuertos() {
+    ifstream is;
+    stringstream  columnas;
+    string fila;
+    #pragma region Aeropuerto valores
+        string id = "";
+        string iata = "";
+        string ident="";
+        string tipo="";
+        string nombre="";
+        string latitud_str="";
+        string longitud_str="";
+        string continente="";
+        string iso_pais="";
+    #pragma endregion
+    clock_t lecturaAero = clock();
+    is.open("../aeropuertos_v2.csv"); //carpeta de proyecto
+    if ( is.good() ) {
+        while (getline(is, fila)) {
+            //¿Se ha leído una nueva fila?
+            if (fila != "") {
+                columnas.str(fila);
+                //formato de fila: id;ident;tipo;nombre;latitud;longitud;continente;iso_pais
+                getline(columnas, id, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, iata, ';');
+                getline(columnas, tipo, ';');
+                getline(columnas, nombre, ';');
+                getline(columnas, latitud_str, ';');
+                getline(columnas, longitud_str, ';');
+                getline(columnas, continente, ';');
+                getline(columnas, iso_pais, ';');
+                //  Transformamos la latitud y longitud a float
+                fila = "";
+                columnas.clear();
+                //Insertamos en el Vector Dinamico el Aeropuerto
+                añadeAeropuerto(Aeropuerto(id,iata,tipo,nombre,continente,iso_pais, UTM(stof(latitud_str),stof(longitud_str))));
+
+
+            }
+        }
+        //Tras leer ordenamos el vector por Codigo Iata
+        ordenarAeropuertos();
+        is.close();
+    }else{
+        std::cout << "Error de apertura en archivo" << std::endl;
+    }
+    std::cout << "Tiempo lectura de aeropuertos: " << ((clock() - lecturaAero) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
+
+}
+/**
+ * @brief Metodo que cargaLasAerolineas
+ */
+void VuelaFlight::cargaAerolineas() {
+    ifstream is;
+    stringstream  columnas;
+    string fila;
+#pragma  region Aerolinea valores
+    string idAerolineaStr;
+    string icao = "";
+    string nombreAero="";
+    string pais="";
+    string activo="";
+#pragma endregion
+    clock_t lecturaAerolineas = clock();
+    is.open("../aerolineas_v1.csv"); //carpeta de proyecto
+    if(is.good()){
+        while (getline(is, fila)){
+            //¿Se ha leído una nueva fila?
+            if (fila != "") {
+                columnas.str(fila);
+                getline(columnas, idAerolineaStr, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, icao, ';');
+                getline(columnas, nombreAero, ';');
+                getline(columnas, pais, ';');
+                getline(columnas, activo, ';');
+                bool activoBool;
+                //condición ? valor_si_verdadero : valor_si_falso;
+                activo=="Y" ? activoBool = true : activoBool = false;
+                int id = stoi(idAerolineaStr);
+                addAerolinea(icao,Aerolinea(id,icao,nombreAero,pais,activoBool));
+                fila = "";
+                columnas.clear();
+            }
+        }
+    }
+    else{
+        std::cout << "Error de apertura en archivo" << std::endl;
+    }
+    is.close();
+    std::cout << "Tiempo lectura de las aerolineas: " << ((clock() - lecturaAerolineas) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
+}
+/**
+ * @brief Metodo que cargaLasRutas
+ */
+void VuelaFlight::cargarRutas() {
+    ifstream is;
+    stringstream  columnas;
+    string fila;
+#pragma region Valores Rutas
+    string icaoRuta = "";
+    string  origen2 = "";
+    string destino2 = "";
+#pragma endregion
+    clock_t lecturaRutas = clock();
+    is.open("../rutas_v1.csv"); //carpeta de proyecto
+    if ( is.good() ) {
+        while (getline(is, fila)) {
+            //¿Se ha leído una nueva fila?
+            if (fila != "") {
+                columnas.str(fila);
+                getline(columnas, icaoRuta, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, origen2, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, destino2, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                fila = "";
+                columnas.clear();
+                addRutas(icaoRuta, origen2, destino2);
+
+            }
+        }
+
+    } else{
+        std::cout << "Error de apertura en archivo" << std::endl;
+    }
+
+    is.close();
+    std::cout << "Tiempo lectura de las rutas: " << ((clock() - lecturaRutas) / (float) CLOCKS_PER_SEC) << " segs." << std::endl;
+
+
+}
