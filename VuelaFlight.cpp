@@ -16,6 +16,12 @@ VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {
 #pragma region Carga Vuelos
     cargarVuelos("../infovuelos_v1.csv");
 #pragma endregion
+#pragma region Mostrar tamaño de las estructuras de datos utilizadas
+    cout<< "Tamaño Aerolineas: " << tamaAirlines() <<endl
+        << "Tamaño aeropuertos: " << tamaAeropuertos() << endl
+        << "Tamaño rutas: " << tamaRutas() << endl
+        <<"Tamaño Vuelos: "<< tamaVuelos() << endl <<endl;
+#pragma  endregion
 }
 /**
  * @brief Constructor parametrizado
@@ -489,15 +495,15 @@ vector<Vuelo *> VuelaFlight::vuelosOperadosPor(string icaoAerolinea, Fecha f) {
  */
 set<string > VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroDest) {
     //Primero obtengo los aeropuertos por pais
-    list<Ruta> rutasAeropuertosdePaisOrigen = buscarRutasPaisOrig(paisOrig);
+    list<Ruta*> rutasAeropuertosdePaisOrigen = buscarRutasPaisOrig(paisOrig);
     //Conjunto set con los identifcadores del vuelo
     set<string> identificadores;
 
     //Recorremos las rutas
-    list<Ruta>::iterator itrutas = rutasAeropuertosdePaisOrigen.begin();
+    list<Ruta*>::iterator itrutas = rutasAeropuertosdePaisOrigen.begin();
         for (itrutas;itrutas!=rutasAeropuertosdePaisOrigen.end(); ++itrutas) {
-            if(iataAeroDest == itrutas->getDestination()->getIata()){
-                    for (Vuelo *vuelo : itrutas->getVuelos()) {
+            if(iataAeroDest == (*itrutas)->getDestination()->getIata()){
+                    for (Vuelo *vuelo : (*itrutas)->getVuelos()) {
                         identificadores.insert(vuelo->getFlightNumber());
                     }
             }
@@ -511,9 +517,9 @@ set<string > VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroD
  * @param pOrig
  * @return
  */
-list<Ruta > VuelaFlight::buscarRutasPaisOrig(string pOrig) {
+list<Ruta *> VuelaFlight::buscarRutasPaisOrig(string pOrig) {
     list<Ruta>::iterator i;
-    list<Ruta > lista;
+    list<Ruta *> lista;
     //Recorremos todos los aeropuertos
     for(i=rutas.begin(); i!=rutas.end();i++){
         //Obtenemos los datos
@@ -523,10 +529,33 @@ list<Ruta > VuelaFlight::buscarRutasPaisOrig(string pOrig) {
             //Devolvemos el dato
 
             //El iterador no es como un puntero y entonces lo que hacemos es devolver el dato * y su direccion &
-            lista.push_back(*i);
+            lista.push_back(&(*i));
         }
     }
     return  lista;
+
+
+}
+/**
+ * @brief Metodo que muestra todos los vuelos
+ * @post Ejercicio1
+ * @param vector
+ */
+void VuelaFlight::muestraVuelos(vector<Vuelo *> vector) {
+    cout<<"Aerolinea : "<< vector[0]->getAerolinea()->getNombre() <<endl
+        <<"Pais :"<< vector[0]->getAerolinea()->getPais()<<endl
+        <<"Iata Origen: " << vector[0]->getAirpOrigin()->getIata()<<endl
+        <<"Iata Destino: " << vector[0]->getAirpDest()->getIata()<<endl<<endl;
+    //Listado con todas las fechas y estado del tiempo en las que se ha efectuado en
+    //condiciones de lluvia o chubascos
+    for (int i = 0; i < vector.size() ; ++i) {
+        string datoMeteo = vector[i]->getDatoMeteo();
+        if(datoMeteo.substr(0,9) == "Chubascos" || datoMeteo.substr(0,6) == "Lluvia" ){
+            cout<<"Fecha "<< vector[i]->getFecha()<<endl
+                <<"Tiempo :  "  << datoMeteo <<endl<<endl;
+        }
+
+    }
 
 
 }

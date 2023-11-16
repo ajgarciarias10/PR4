@@ -12,25 +12,22 @@ using  namespace std;
  * @return
  */
 int main(int argc, const char * argv[]) {
-
 //Declaro clase VuelaFlight
     VuelaFlight vl;
-#pragma  region Cargar Vuelos
-#pragma  endregion
-    cout<< "Tamaño Aerolineas: " << vl.tamaAirlines() <<endl
-        << "Tamaño aeropuertos: " << vl.tamaAeropuertos() << endl
-        << "Tamaño rutas: " << vl.tamaRutas() << endl
-       <<"Tamaño Vuelos: "<< vl.tamaVuelos() << endl <<endl;
-//BuscaVuelos
- vector<Vuelo*> vectorsito = vl.buscaVuelos("RYR5318");
-    for (int i = 0; i < vectorsito.size(); ++i) {
-        cout<< vectorsito[i]->getFlightNumber()<<endl<<endl;
 
-    }
+//BuscaVuelos
+cout<<"----------------AEA5201----------------"<<endl<<endl;
+ vector<Vuelo*> vector1 = vl.buscaVuelos("AEA5201");
+ vl.muestraVuelos(vector1);
+ cout<<"----------------VLG----------------"<<endl<<endl;
+vector<Vuelo*> vector2 = vl.buscaVuelos("VLG2021");
+vl.muestraVuelos(vector2);
+
+
 //Metodo BuscaAeroPor
     Fecha f(13,04,18);
     vector<Vuelo*> vectorsito21 = vl.vuelosOperadosPor("RYR5318",f);
-    for (int i = 0; i < vectorsito.size(); ++i) {
+    for (int i = 0; i < vectorsito21.size(); ++i) {
         cout<< vectorsito21[i]->getDatoMeteo()<<endl<<endl;
 
     }

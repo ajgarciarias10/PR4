@@ -84,7 +84,9 @@ public:
     //Metodo que busca los Vuelos de destinoPor Aeropuerto
     set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
     //Metodo util para obtenerRutas en funcnion del paisDeOrigen
-    list<Ruta>buscarRutasPaisOrig(string pOrig);
+    list<Ruta*>buscarRutasPaisOrig(string pOrig);
+    //Metodo para mostrar los vuelos en buscaVuelos
+    void muestraVuelos(vector<Vuelo*> vector);
 };
 
 
