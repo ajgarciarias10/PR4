@@ -86,7 +86,9 @@ public:
     //Metodo util para obtenerRutas en funcnion del paisDeOrigen
     list<Ruta*>buscarRutasPaisOrig(string pOrig);
     //Metodo para mostrar los vuelos en buscaVuelos
-    void muestraVuelos(vector<Vuelo*> vector);
+    void muestraVuelos(vector<Vuelo*> vector,bool modo);
+    //Metodo que buscaAeropuertosAerolineas por icao
+    vector<Aeropuerto *>buscaAeropuertosAerolinea(string icaoAerolinea);
 };
 
 

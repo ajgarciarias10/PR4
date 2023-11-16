@@ -246,6 +246,20 @@ vector<Vuelo *> Aerolinea::getVuelos(Fecha fIni, Fecha fFin) {
 long int Aerolinea::getNumVuelos() {
     return flights.size();
 }
+/**
+ * @brief Metodo para obtener  vuelos
+ * @return
+ */
+vector<Vuelo > Aerolinea::getFlights() {
+    vector<Vuelo > pAdev ;
+    for (pair<string ,Vuelo> par: flights) {
+        pAdev.push_back((par.second));
+    }
+    return pAdev;
+}
+
+
+
 
 
 

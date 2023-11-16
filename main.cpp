@@ -14,114 +14,62 @@ using  namespace std;
 int main(int argc, const char * argv[]) {
 //Declaro clase VuelaFlight
     VuelaFlight vl;
-
-//BuscaVuelos
-cout<<"----------------AEA5201----------------"<<endl<<endl;
- vector<Vuelo*> vector1 = vl.buscaVuelos("AEA5201");
- vl.muestraVuelos(vector1);
- cout<<"----------------VLG----------------"<<endl<<endl;
-vector<Vuelo*> vector2 = vl.buscaVuelos("VLG2021");
-vl.muestraVuelos(vector2);
-
-
-//Metodo BuscaAeroPor
-    Fecha f(13,04,18);
-    vector<Vuelo*> vectorsito21 = vl.vuelosOperadosPor("RYR5318",f);
-    for (int i = 0; i < vectorsito21.size(); ++i) {
-        cout<< vectorsito21[i]->getDatoMeteo()<<endl<<endl;
-
-    }
+try {
+#pragma region Ejercicio 1
+    //BuscaVuelos
+    cout << "----------------AEA5201----------------" << endl << endl;
+    vector<Vuelo *> vector1 = vl.buscaVuelos("AEA5201");
+    //Le pasamos vector 1 modo true modo buscaVuelos
+    vl.muestraVuelos(vector1, true);
+    cout << "----------------VLG----------------" << endl << endl;
+    //Le pasamos vector 2 modo true modo buscaVuelos
+    vector<Vuelo *> vector2 = vl.buscaVuelos("VLG2021");
+    vl.muestraVuelos(vector2, true);
+    cout << "----------------------------------" << endl << endl;
+#pragma endregion
+#pragma region Ejercicio 2
+    //Metodo BuscaAeroPor
+    cout << "---------VuelosOperadosPor---------" << endl << endl;
+    Fecha f(13, 04, 18);
+    vector<Vuelo *> vectorsito21 = vl.vuelosOperadosPor("VLG", f);
+    //Le pasamos vector 2 modo false modo vuelos operados por
+    vl.muestraVuelos(vectorsito21, false);
+#pragma endregion
+#pragma region Ejercicio 3
+    //Mostrar identificadores de vuelo (únicos) con destino a Londres (LHR, STN, LTN,LGW)
+    //desde cualquier aeropuerto español
+    cout << "-----------VuelosLondon-----------" << endl << endl;
     set<string> vuelosLHR = vl.buscaVuelosDestAerop("ES", "LHR");
     set<string> vuelosSTN = vl.buscaVuelosDestAerop("ES", "STN");
     set<string> vuelosLTN = vl.buscaVuelosDestAerop("ES", "LTN");
     set<string> vuelosLGW = vl.buscaVuelosDestAerop("ES", "LGW");
-
+    //Hacemos un par con todos los vuelosdeLondres
     set<string> vuelosLondres;
-    vuelosLondres.insert(vuelosSTN.begin(),vuelosSTN.end());
-    vuelosLondres.insert(vuelosLHR.begin(),vuelosLHR.end());
-    vuelosLondres.insert(vuelosLTN.begin(),vuelosLTN.end());
-    vuelosLondres.insert(vuelosLGW.begin(),vuelosLGW.end());
-
-    cout<<"El total de vuelos a londres son: "<<vuelosLondres.size()<<endl;
-    set<string>::iterator vuelosLondresIT=vuelosLondres.begin();
-    for(vuelosLondresIT;vuelosLondresIT!=vuelosLondres.end();vuelosLondresIT++)
-        cout<<"Vuelo: "<<*vuelosLondresIT<<endl;
-/*
-try{
-#pragma region Visualiza toda la información de la aerolínea Ryanair, RYR
-
-    cout<<endl<<"------------------------------Información de la aerolínea Ryanair------------------------------"<<endl<<endl;
-    Aerolinea aerolinea =  vl.buscaAerolinea("RYR");
-    cout<<"Id: "<<aerolinea.getId() <<" Aerolinea: "<< aerolinea.getNombre() <<  " Icao : "<<  aerolinea.getIcao() << " Pais: " << aerolinea.getPais() << endl;
-
+    vuelosLondres.insert(vuelosSTN.begin(), vuelosSTN.end());
+    vuelosLondres.insert(vuelosLHR.begin(), vuelosLHR.end());
+    vuelosLondres.insert(vuelosLTN.begin(), vuelosLTN.end());
+    vuelosLondres.insert(vuelosLGW.begin(), vuelosLGW.end());
+    cout << "El total de vuelos a londres son: " << vuelosLondres.size() << endl;
+    set<string>::iterator vuelosLondresIT = vuelosLondres.begin();
+    for (vuelosLondresIT; vuelosLondresIT != vuelosLondres.end(); vuelosLondresIT++)
+        cout << "Vuelo: " << *vuelosLondresIT << endl;
 #pragma endregion
-
-#pragma  region Muestra todas las aerolíneas activas.
-
-    cout<<endl<<"--------------------------Aerolíneas activas--------------------------"<<endl<<endl;
-    vector<Aerolinea*> vectorActivas(vl.buscaAerolineasActiva());
-    cout<<"Numero de aerolineas activas: "<< vectorActivas.size()<<endl<<endl;
-    for (int i = 0; i < vectorActivas.size(); ++i) {
-        string activo = " ";
-        vectorActivas[i]->isActivo() ? activo = "Si" : activo ="No";
-        cout<< "Id: "<< vectorActivas[i]->getId() << " Nombre: "<< vectorActivas[i]->getNombre()<< " Pais: " << vectorActivas[i]->getPais() <<" Activo: "<< activo <<endl;
+#pragma region Ejercicio 4 PAREJAS
+    cout << "-----------EJEPAREJAS-----------" << endl << endl;
+    vector<Aeropuerto*> vAeropuertos = vl.buscaAeropuertosAerolinea("EVE");
+    for (int i = 0; i < vAeropuertos.size(); ++i) {
+        cout << "Aeropuerto : " << vAeropuertos[i]->getNombre() << endl;
     }
-
 #pragma endregion
+}catch (invalid_argument &e){
+    cout<<e.what()<<endl;
+}
+catch(out_of_range &o){
+    cout<<o.what()<<endl;
+}
+catch(bad_alloc &b){
+    cout<<b.what()<<endl;
+}
 
-#pragma  region Busca todos los aeropuertos (origen) en los que opera Iberia Airlines, con icao IBE
-
-    cout<<endl<<"------------------------------Aeropuertos (origen) en los que opera Iberia Airlines-------------------------------"<<endl<<endl;
-    Aerolinea iberiaAirlines = vl.buscaAerolinea("IBE");
-    vector<Aeropuerto*> aeropuertosIberia  =  iberiaAirlines.getAeropuertosOrig();
-    cout<<"Numero de aeropuertos que operan con iberia: "<< aeropuertosIberia.size()<<endl<<endl;
-    for (int j = 0; j < aeropuertosIberia.size(); ++j) {
-        cout<<"Id: "<<aeropuertosIberia[j]->getId()<<" Aeropuerto: "<< aeropuertosIberia[j]->getNombre() <<  " Iata : "
-            <<  aeropuertosIberia[j]->getIata() << " Iso Pais: " << aeropuertosIberia[j]->getIsoPais() <<endl;
-
-    }
-
-#pragma  endregion
-
-#pragma  region   Busca todas las rutas operadas por Iberia Airlines con origen en el aeropuerto de Málaga(AGP).
-
-    cout<<endl<<"-----------------Rutas operadas por Iberia Airlines con origen en el aeropuerto de Málaga(AGP)-----------------"<<endl<<endl;
-    //AeroRutasAGP
-    deque<Ruta*> aerorutasAGP = iberiaAirlines.getRutasAeropuerto("AGP");
-    deque<Ruta*> aerorutasMalaga;
-    for (int j = 0; j < aerorutasAGP.size(); ++j) {
-        if(aerorutasAGP[j]->getOrigin()->getNombre() == "Málaga-Costa del Sol Airport"){
-            aerorutasMalaga.push_back(aerorutasAGP[j]);
-        }
-    }
-
-    cout<<"Numero de rutas: "<< aerorutasMalaga.size()<<endl<<endl;
-    for (int i = 0; i < aerorutasMalaga.size(); ++i) {
-        cout<<"Origen: "<<aerorutasMalaga[i]->getOrigin()->getNombre()<<"---> Destino: "<< aerorutasMalaga[i]->getDestination()->getNombre() <<endl;
-
-    }
-
-#pragma  endregion
-
-#pragma region Aerolíneas que operan en España.
-
-        cout<<endl<<"------------------------------Aerolíneas que operan en España------------------------------"<<endl<<endl;
-        vector<Aerolinea*> aerolineaEsp =  vl.getAerolineasPais("Spain");
-        cout<<"Numero de aerolineas que operan en España: "<<aerolineaEsp.size()<<endl<<endl;
-        for (int i = 0; i < aerolineaEsp.size(); ++i) {
-            cout<< "Id: "<< aerolineaEsp[i]->getId() << " Nombre: "<< aerolineaEsp[i]->getNombre()<< " Pais: " << aerolineaEsp[i]->getPais() <<endl;
-        }
-
-#pragma endregion
-    }catch (invalid_argument &e){
-        cout<<e.what()<<endl;
-    }
-    catch(out_of_range &o){
-        cout<<o.what()<<endl;
-    }
-    catch(bad_alloc &b){
-        cout<<b.what()<<endl;
-    }
-    */
     return 0;
 }

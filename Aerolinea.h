@@ -68,8 +68,9 @@ public:
     vector<Vuelo*>getVuelos(string fNumber);
     //Metodo para obtenerlos por una fecha determinada
     vector<Vuelo*>getVuelos(Fecha fIni, Fecha fFin);
-
+    //Metodo para obtener el numero de los vuelos
     long int getNumVuelos();
+    vector<Vuelo>getFlights();
 };
 
 
