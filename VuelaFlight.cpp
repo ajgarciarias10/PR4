@@ -576,22 +576,22 @@ void VuelaFlight::muestraVuelos(vector<Vuelo *> vector,bool modo) {
     }
 
 }
+/**
+ * @brief Ejercicio Por Pareja buscar Aeropuertos dentro de Aerolinea por icao
+ * @param icaoAerolinea
+ * @return
+ */
 
 vector<Aeropuerto *> VuelaFlight::buscaAeropuertosAerolinea(string icaoAerolinea) {
     set<Aeropuerto*> setAeros;
     vector<Aeropuerto*> vAeroports;
     vector<Vuelo> vVuelos;
-        int contador = 0;
     Aerolinea a = buscaAerolinea(icaoAerolinea);
     vVuelos = a.getFlights();
     for (Vuelo vuelo : vVuelos) {
-        contador++;
             setAeros.insert(vuelo.getAirpOrigin());
             setAeros.insert(vuelo.getAirpDest());
-
-
     }
-
     for (Aeropuerto *aero : setAeros) {
         vAeroports.push_back(aero);
     }
