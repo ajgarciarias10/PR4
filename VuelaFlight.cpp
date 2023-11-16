@@ -448,19 +448,7 @@ void VuelaFlight::cargarRutas() {
  * @return
  */
 int VuelaFlight::tamaVuelos() {
-    long int size= 0;
-    long int size2= 0;
-    list<Ruta>::iterator itrutitas = rutas.begin();
-    for (itrutitas; itrutitas!=rutas.end(); ++itrutitas) {
-        size += itrutitas->getNumVuelos();
-    }
-    map<string,Aerolinea>::iterator itaerolineas = airlines.begin();
-    for (itaerolineas; itaerolineas!=airlines.end(); ++itaerolineas) {
-        size2 += itaerolineas->second.getNumVuelos();
-
-    }
-    return size+size2;
-
+    return tamaVuelo;
 }
 /**
  * @brief Metodo que busca los vuelos y los devuelve
@@ -493,25 +481,52 @@ vector<Vuelo *> VuelaFlight::vuelosOperadosPor(string icaoAerolinea, Fecha f) {
     }
     return vuelosADev;
 }
-
+/**
+ * @brief Metodo que buscaVuelosDestAerop
+ * @param paisOrig
+ * @param iataAeroDest
+ * @return
+ */
 set<string > VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroDest) {
     //Primero obtengo los aeropuertos por pais
-    vector<Aeropuerto*> aeropuertosdePaisOrigen = buscarAeropuertoPais(paisOrig);
+    list<Ruta> rutasAeropuertosdePaisOrigen = buscarRutasPaisOrig(paisOrig);
     //Conjunto set con los identifcadores del vuelo
     set<string> identificadores;
+
     //Recorremos las rutas
-    list<Ruta>::iterator itrutas = rutas.begin();
-    for (int i = 0; i < aeropuertosdePaisOrigen.size(); ++i) {
-        for (itrutas;itrutas!=rutas.end(); ++itrutas) {
-            if(aeropuertosdePaisOrigen[i]->getIsoPais() == itrutas->getOrigin()->getIsoPais()
-            && itrutas->getDestination()->getIata() == iataAeroDest){
+    list<Ruta>::iterator itrutas = rutasAeropuertosdePaisOrigen.begin();
+        for (itrutas;itrutas!=rutasAeropuertosdePaisOrigen.end(); ++itrutas) {
+            if(iataAeroDest == itrutas->getDestination()->getIata()){
                     for (Vuelo *vuelo : itrutas->getVuelos()) {
                         identificadores.insert(vuelo->getFlightNumber());
                     }
             }
         }
-    }
 
     return  identificadores;
+
+}
+/**
+ * @brief Mismo metodo que getRutasOrig por iata pero este por pais
+ * @param pOrig
+ * @return
+ */
+list<Ruta > VuelaFlight::buscarRutasPaisOrig(string pOrig) {
+    list<Ruta>::iterator i;
+    list<Ruta > lista;
+    //Recorremos todos los aeropuertos
+    for(i=rutas.begin(); i!=rutas.end();i++){
+        //Obtenemos los datos
+        string origenBusq = i->getOrigin()->getIsoPais();
+        //En caso de que se encuentre
+        if(origenBusq==pOrig){
+            //Devolvemos el dato
+
+            //El iterador no es como un puntero y entonces lo que hacemos es devolver el dato * y su direccion &
+            lista.push_back(*i);
+        }
+    }
+    return  lista;
+
 
 }

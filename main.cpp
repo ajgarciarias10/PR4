@@ -34,13 +34,21 @@ int main(int argc, const char * argv[]) {
         cout<< vectorsito21[i]->getDatoMeteo()<<endl<<endl;
 
     }
+    set<string> vuelosLHR = vl.buscaVuelosDestAerop("ES", "LHR");
+    set<string> vuelosSTN = vl.buscaVuelosDestAerop("ES", "STN");
+    set<string> vuelosLTN = vl.buscaVuelosDestAerop("ES", "LTN");
+    set<string> vuelosLGW = vl.buscaVuelosDestAerop("ES", "LGW");
 
-    set<string> vuelos = vl.buscaVuelosDestAerop("ES", "LHR");
-    set<string>::iterator setter = vuelos.begin();
-    for (setter; setter != vuelos.end(); ++setter) {
-        // Resto del bucle
-        cout<<*setter<<endl;
-    }
+    set<string> vuelosLondres;
+    vuelosLondres.insert(vuelosSTN.begin(),vuelosSTN.end());
+    vuelosLondres.insert(vuelosLHR.begin(),vuelosLHR.end());
+    vuelosLondres.insert(vuelosLTN.begin(),vuelosLTN.end());
+    vuelosLondres.insert(vuelosLGW.begin(),vuelosLGW.end());
+
+    cout<<"El total de vuelos a londres son: "<<vuelosLondres.size()<<endl;
+    set<string>::iterator vuelosLondresIT=vuelosLondres.begin();
+    for(vuelosLondresIT;vuelosLondresIT!=vuelosLondres.end();vuelosLondresIT++)
+        cout<<"Vuelo: "<<*vuelosLondresIT<<endl;
 /*
 try{
 #pragma region Visualiza toda la información de la aerolínea Ryanair, RYR

@@ -83,6 +83,8 @@ public:
     vector<Vuelo*>vuelosOperadosPor(string icaoAerolinea,Fecha f);
     //Metodo que busca los Vuelos de destinoPor Aeropuerto
     set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
+    //Metodo util para obtenerRutas en funcnion del paisDeOrigen
+    list<Ruta>buscarRutasPaisOrig(string pOrig);
 };
 
 
