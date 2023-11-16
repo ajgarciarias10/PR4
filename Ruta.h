@@ -5,7 +5,7 @@
 #include "Aerolinea.h"
 #include <list>
 #include "Vuelo.h"
-
+#include <iostream>
 using namespace std;
 /**
  *@file Ruta.h
@@ -21,18 +21,19 @@ private:
     Aeropuerto *destination;
     Aeropuerto *origin;
     Aerolinea *company;
-    list<Vuelo*>flightRou;
+    list<Vuelo*>fligthRou;
 public:
     //Constructor por defecto
     Ruta();
     //Constructor copia
     Ruta(const Ruta &orig);
     //Constructor paramerizado
-    Ruta(Aerolinea *company,Aeropuerto *dest= nullptr,Aeropuerto* orig= nullptr);
+    Ruta(Aeropuerto *destination= nullptr, Aeropuerto *origin= nullptr, Aerolinea *company= nullptr,list<Vuelo*> fligthRou = list<Vuelo *>());
+
     //Destructor
     virtual ~Ruta();
     //Metodo que añade los vuelos a flightRou
-    bool addVuelo(Vuelo &v);
+    bool addVuelo(Vuelo *v);
     //Obtener el numero de vuelos
     long int getNumVuelos();
     //Get Vuelos
@@ -49,6 +50,7 @@ public:
     void setOrigin(Aeropuerto *origin);
 
     void setCompany(Aerolinea *company);
+
 };
 
 

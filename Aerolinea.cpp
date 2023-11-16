@@ -184,23 +184,24 @@ void Aerolinea::setAerorutas(const deque<Ruta *> &aerorutas) {
  */
 Vuelo* Aerolinea::addVuelo(Vuelo &v) {
     //Comprobacion de nulos
-    if(v.getAerolinea() && v.getAirpDest() && v.getAirpOrigin()) {
-            //Comprobamos que el dato no esta repetido
-             pair<string,Vuelo*> par(v.getFlightNumber(),&v);
-            //Insertamos el par
-            flights.insert(par);
-            //Comprobamos si pertenece a alguna ruta de la propia aerolinea
-            //Recorremos las rutas de la aerolinea
-            for (int i = 0; i < aerorutas.size(); ++i) {
-                if(aerorutas[i]->getOrigin()->getIata() != v.getAirpOrigin()->getIata() ||
-                    aerorutas[i]->getDestination()->getIata() != v.getAirpDest()->getIata() ||
-                    aerorutas[i]->getCompany()->getIcao() != v.getAerolinea()->getIcao()){
-                    //Si tiene ese iata  insertamos  la ruta
-                    // Añadimos el vuelo
-                    aerorutas[i]->addVuelo(*par.second);
-                    return  &(*par.second);
-                }
-           }
+    if(!v.getAerolinea() && !v.getAirpDest() && !v.getAirpOrigin())
+        return nullptr;
+
+    //Comprobamos que el dato no esta repetido
+    pair<string,Vuelo> par(v.getFlightNumber(),v);
+    //Insertamos el par y obtenemos la direccion de memoria del insetado
+    Vuelo* nV= &(flights.insert(par)->second);
+    //Comprobamos si pertenece a alguna ruta de la propia aerolinea
+    //Recorremos las rutas de la aerolinea
+    for (int i = 0; i < aerorutas.size(); ++i) {
+        if(aerorutas[i]->getOrigin()->getIata() == v.getAirpOrigin()->getIata() &&
+           aerorutas[i]->getDestination()->getIata() == v.getAirpDest()->getIata() &&
+           aerorutas[i]->getCompany()->getIcao() == v.getAerolinea()->getIcao()){
+            //Si tiene ese iata  insertamos  la ruta
+            // Añadimos el vuelo
+            aerorutas[i]->addVuelo(nV);
+            return nV ;
+        }
     }
     return nullptr;
 }
@@ -211,12 +212,12 @@ Vuelo* Aerolinea::addVuelo(Vuelo &v) {
  */
 vector<Vuelo *> Aerolinea::getVuelos(string fNumber) {
     vector<Vuelo*>vectorVuelos;
-    multimap<string, Vuelo *>::iterator mapaDeVuelos ;
+    multimap<string, Vuelo >::iterator mapaDeVuelos ;
     for (mapaDeVuelos=  flights.find(fNumber); mapaDeVuelos !=flights.end(); mapaDeVuelos++) {
         if(fNumber == mapaDeVuelos->first){
             //Lo metemos en el el vector
             //Accedemos al iterador al dato y devolvemos la direccion de memoria es decir llenamos el vector con las direccion de donde se encuentran los vuelos
-            vectorVuelos.push_back(&(*mapaDeVuelos->second));
+            vectorVuelos.push_back(&(mapaDeVuelos->second));
         }
     }
     return vectorVuelos;
@@ -230,16 +231,20 @@ vector<Vuelo *> Aerolinea::getVuelos(string fNumber) {
 
 vector<Vuelo *> Aerolinea::getVuelos(Fecha fIni, Fecha fFin) {
     vector<Vuelo*>vectorVuelosPorFecha;
-    multimap<string, Vuelo *>::iterator mapaDeVuelos ;
+    multimap<string, Vuelo >::iterator mapaDeVuelos ;
     for (mapaDeVuelos=  flights.begin(); mapaDeVuelos !=flights.end(); mapaDeVuelos++) {
-        if(!(mapaDeVuelos->second->getFecha() < fIni) && mapaDeVuelos->second->getFecha() <fFin ||
-            fIni.mismoDia(mapaDeVuelos->second->getFecha()) && fFin.mismoDia(mapaDeVuelos->second->getFecha())){
+        if(!(mapaDeVuelos->second.getFecha() < fIni) && mapaDeVuelos->second.getFecha() <fFin ||
+            fIni.mismoDia(mapaDeVuelos->second.getFecha()) && fFin.mismoDia(mapaDeVuelos->second.getFecha())){
             //Lo metemos en el el vector
             //Accedemos al iterador al dato y devolvemos la direccion de memoria es decir llenamos el vector con las direccion de donde se encuentran los vuelos
-            vectorVuelosPorFecha.push_back(&(*mapaDeVuelos->second));
+            vectorVuelosPorFecha.push_back(&(mapaDeVuelos->second));
         }
     }
     return vectorVuelosPorFecha;
+}
+
+long int Aerolinea::getNumVuelos() {
+    return flights.size();
 }
 
 

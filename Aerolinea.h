@@ -18,7 +18,7 @@ private:
     string pais;
     bool activo;
     deque<Ruta*> aerorutas;
-    multimap<string ,Vuelo*> flights;
+    multimap<string ,Vuelo> flights;
 public:
     //Constructor por defecto
     Aerolinea();
@@ -68,6 +68,8 @@ public:
     vector<Vuelo*>getVuelos(string fNumber);
     //Metodo para obtenerlos por una fecha determinada
     vector<Vuelo*>getVuelos(Fecha fIni, Fecha fFin);
+
+    long int getNumVuelos();
 };
 
 

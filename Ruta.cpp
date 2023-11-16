@@ -3,10 +3,10 @@
 Ruta::~Ruta() {
 }
 
-Ruta::Ruta():company(nullptr),origin(nullptr),destination(nullptr),flightRou() {}
-Ruta::Ruta(const Ruta &orig) :company(orig.company),origin(orig.origin),destination(orig.destination),flightRou(orig.flightRou) {}
-Ruta::Ruta( Aerolinea  *aerolinea, Aeropuerto *dest, Aeropuerto *orig) :company(aerolinea),origin(orig),destination(dest),flightRou() {}
-
+Ruta::Ruta():company(nullptr),origin(nullptr),destination(nullptr),fligthRou() {}
+Ruta::Ruta(const Ruta &orig) :company(orig.company),origin(orig.origin),destination(orig.destination),fligthRou(orig.fligthRou) {}
+Ruta::Ruta(Aeropuerto *destination, Aeropuerto *origin, Aerolinea *company,  list<Vuelo *> fvuelo)
+        : destination(destination), origin(origin), company(company), fligthRou(fvuelo) {}
 
 
 
@@ -39,13 +39,14 @@ void Ruta::setCompany(Aerolinea *company) {
  * @return
  */
 
-bool Ruta::addVuelo(Vuelo &v) {
+bool Ruta::addVuelo(Vuelo *v) {
     // Verificar que la aerolínea y los aeropuertos de origen y destino
     // coinciden con los de la ruta
-    if(v.getAirpOrigin()->getIata() == this->origin->getIata()&&
-       v.getAirpDest()->getIata() == this->destination->getIata()&&
-       v.getAerolinea()->getIcao() == this->company->getIcao()){
-        flightRou.push_back(&v);
+    bool bool1 =v->getAirpOrigin()->getIata() == this->origin->getIata();
+    bool bool2 =  v->getAirpDest()->getIata() == this->destination->getIata();
+    bool bool3 =  v->getAerolinea()->getIcao() == this->company->getIcao();
+    if( bool1 &&  bool2 && bool3 ){
+        fligthRou.push_back(v);
         return true;
     }
     return false;
@@ -56,9 +57,13 @@ bool Ruta::addVuelo(Vuelo &v) {
  * @return
  */
 long int Ruta::getNumVuelos() {
-    return flightRou.size();
+    return fligthRou.size();
 }
 list<Vuelo*> Ruta::getVuelos() {
-    return flightRou;
+    return fligthRou;
 }
+
+
+
+
 

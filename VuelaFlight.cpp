@@ -100,7 +100,7 @@ vector<Aeropuerto * > VuelaFlight::buscarAeropuertoPais(string pais) {
  */
 void VuelaFlight::addNuevaRuta(Aeropuerto* AerOrig, Aeropuerto* AerDest, Aerolinea* aerolineaEncontrada) {
             //Añadimos las rutas ya con la aerolinea  y los aeropertos
-            rutas.push_back(Ruta(aerolineaEncontrada,AerDest,AerOrig));
+            rutas.push_back(Ruta(AerDest,AerOrig,aerolineaEncontrada));
             //d. Obtener la dirección del objeto ruta recién insertado en la lista (en la última posición).
             //e. Enlazar la aerolínea encontrada antes con la ruta anterior mediante
             //Aerolinea::linkAerolRuta.
@@ -248,7 +248,8 @@ bool VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, 
     dest.setIata(iataAeroDest);
     vector<Aeropuerto>::iterator iteradorDest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),dest);
     if(mapaEncuentraVuelos!=airlines.end() && iteradorOrig!=aeropuertos.end() && iteradorDest!=aeropuertos.end()){
-        mapaEncuentraVuelos->second.addVuelo(*new Vuelo(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second)));
+        Vuelo v(fNumber,plane,datosMeteo,f,&(*iteradorOrig),&(*iteradorDest),&(mapaEncuentraVuelos->second));
+        mapaEncuentraVuelos->second.addVuelo(v);
         return true;
     }
     else{
@@ -447,7 +448,18 @@ void VuelaFlight::cargarRutas() {
  * @return
  */
 int VuelaFlight::tamaVuelos() {
-    return tamaVuelo;
+    long int size= 0;
+    long int size2= 0;
+    list<Ruta>::iterator itrutitas = rutas.begin();
+    for (itrutitas; itrutitas!=rutas.end(); ++itrutitas) {
+        size += itrutitas->getNumVuelos();
+    }
+    map<string,Aerolinea>::iterator itaerolineas = airlines.begin();
+    for (itaerolineas; itaerolineas!=airlines.end(); ++itaerolineas) {
+        size2 += itaerolineas->second.getNumVuelos();
+
+    }
+    return size+size2;
 
 }
 /**
