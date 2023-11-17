@@ -586,8 +586,8 @@ vector<Aeropuerto *> VuelaFlight::buscaAeropuertosAerolinea(string icaoAerolinea
     set<Aeropuerto*> setAeros;
     vector<Aeropuerto*> vAeroports;
     vector<Vuelo> vVuelos;
-    Aerolinea a = buscaAerolinea(icaoAerolinea);
-    vVuelos = a.getFlights();
+    Aerolinea aaero = buscaAerolinea(icaoAerolinea);
+    vVuelos = aaero.getFlights();
     for (Vuelo vuelo : vVuelos) {
             setAeros.insert(vuelo.getAirpOrigin());
             setAeros.insert(vuelo.getAirpDest());
