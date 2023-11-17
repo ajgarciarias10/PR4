@@ -17,28 +17,28 @@ int main(int argc, const char * argv[]) {
 try {
 #pragma region Ejercicio 1
     //BuscaVuelos
-    cout << "----------------AEA5201----------------" << endl << endl;
+    cout << "----------------AEA5201----------------"  << endl;
     vector<Vuelo *> vector1 = vl.buscaVuelos("AEA5201");
     //Le pasamos vector 1 modo true modo buscaVuelos
     vl.muestraVuelos(vector1, true);
-    cout << "----------------VLG----------------" << endl << endl;
+    cout << "----------------VLG----------------" << endl;
     //Le pasamos vector 2 modo true modo buscaVuelos
     vector<Vuelo *> vector2 = vl.buscaVuelos("VLG2021");
     vl.muestraVuelos(vector2, true);
-    cout << "----------------------------------" << endl << endl;
 #pragma endregion
 #pragma region Ejercicio 2
     //Metodo BuscaAeroPor
-    cout << "---------VuelosOperadosPor---------" << endl << endl;
+    cout << "---------VuelosOperadosPor---------" << endl;
     Fecha f(13, 04, 18);
     vector<Vuelo *> vectorsito21 = vl.vuelosOperadosPor("VLG", f);
     //Le pasamos vector 2 modo false modo vuelos operados por
     vl.muestraVuelos(vectorsito21, false);
+    cout << "----------------------------------" << endl << endl;
 #pragma endregion
 #pragma region Ejercicio 3
     //Mostrar identificadores de vuelo (únicos) con destino a Londres (LHR, STN, LTN,LGW)
     //desde cualquier aeropuerto español
-    cout << "-----------VuelosLondon-----------" << endl << endl;
+    cout << "-----------VuelosLondon-----------" << endl;
     set<string> vuelosLHR = vl.buscaVuelosDestAerop("ES", "LHR");
     set<string> vuelosSTN = vl.buscaVuelosDestAerop("ES", "STN");
     set<string> vuelosLTN = vl.buscaVuelosDestAerop("ES", "LTN");
@@ -53,13 +53,17 @@ try {
     set<string>::iterator vuelosLondresIT = vuelosLondres.begin();
     for (vuelosLondresIT; vuelosLondresIT != vuelosLondres.end(); vuelosLondresIT++)
         cout << "Vuelo: " << *vuelosLondresIT << endl;
+    cout << "----------------------------------" << endl << endl;
+
 #pragma endregion
 #pragma region Ejercicio 4 PAREJAS
-    cout << "-----------EJEPAREJAS-----------" << endl << endl;
+    cout << "-----------EJEPAREJAS-----------" << endl;
     vector<Aeropuerto*> vAeropuertos = vl.buscaAeropuertosAerolinea("EVE");
     for (int i = 0; i < vAeropuertos.size(); ++i) {
         cout << "Aeropuerto : " << vAeropuertos[i]->getNombre() << endl;
     }
+    cout << "----------------------------------" << endl << endl;
+
 #pragma endregion
 }catch (invalid_argument &e){
     cout<<e.what()<<endl;

@@ -556,11 +556,14 @@ void VuelaFlight::muestraVuelos(vector<Vuelo *> vector,bool modo) {
         for (int i = 0; i < vector.size(); ++i) {
             string datoMeteo = vector[i]->getDatoMeteo();
             if (datoMeteo.substr(0, 9) == "Chubascos" || datoMeteo.substr(0, 6) == "Lluvia") {
-                cout << "Fecha " << vector[i]->getFecha() << endl
-                     << "Tiempo :  " << datoMeteo << endl << endl;
+                cout << "Fecha: " << vector[i]->getFecha().cadena().substr(0,7)
+                     << ", Tiempo: " << datoMeteo << endl;
             }
 
         }
+        cout << "----------------------------------" << endl<<endl;
+
+
     }else{
         set<string> modAVun;
 
