@@ -588,12 +588,14 @@ void VuelaFlight::muestraVuelos(vector<Vuelo *> vector,bool modo) {
 vector<Aeropuerto *> VuelaFlight::buscaAeropuertosAerolinea(string icaoAerolinea) {
     set<Aeropuerto*> setAeros;
     vector<Aeropuerto*> vAeroports;
-    vector<Vuelo> vVuelos;
+    vector<Vuelo*> vVuelos;
+    vector<Vuelo*>::iterator itVuelos;
     Aerolinea aaero = buscaAerolinea(icaoAerolinea);
     vVuelos = aaero.getFlights();
-    for (Vuelo vuelo : vVuelos) {
-            setAeros.insert(vuelo.getAirpOrigin());
-            setAeros.insert(vuelo.getAirpDest());
+    itVuelos = vVuelos.begin();
+    for (;itVuelos!=vVuelos.end();itVuelos++) {
+            setAeros.insert((*itVuelos)->getAirpOrigin());
+            setAeros.insert((*itVuelos)->getAirpDest());
     }
     for (Aeropuerto *aero : setAeros) {
         vAeroports.push_back(aero);

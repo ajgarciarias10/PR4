@@ -250,10 +250,11 @@ long int Aerolinea::getNumVuelos() {
  * @brief Metodo para obtener  vuelos
  * @return
  */
-vector<Vuelo > Aerolinea::getFlights() {
-    vector<Vuelo > pAdev ;
-    for (pair<string ,Vuelo> par: flights) {
-        pAdev.push_back((par.second));
+vector<Vuelo*> Aerolinea::getFlights() {
+    vector<Vuelo*> pAdev ;
+    map<string,Vuelo>::iterator itpAdv ;
+    for (itpAdv= flights.begin(); itpAdv!=flights.end();itpAdv++) {
+        pAdev.push_back(&(itpAdv->second));
     }
     return pAdev;
 }
