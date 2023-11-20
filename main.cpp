@@ -11,20 +11,67 @@ using  namespace std;
  * @param argv
  * @return
  */
+class Imprimir {
+/**
+* @brief Metodo que muestra todos los vuelos/
+* @post Modo True para mostrar como en Busca vuelos
+* @post Modo False para mostrar modelos de aviones en  vuelos operados por
+* @param vector
+*/
+public:
+    void muestraVuelos(vector<Vuelo *> vector, bool modo) {
+        if (modo) {
+            //Datos de la aerolínea que los opera ( nombre completo y país al que pertenece) e iata
+            //de los aeropuertos de origen, destino
+
+            cout << "Aerolinea : " << vector[0]->getAerolinea()->getNombre() << endl
+                 << "Pais :" << vector[0]->getAerolinea()->getPais() << endl
+                 << "Iata Origen: " << vector[0]->getAirpOrigin()->getIata() << endl
+                 << "Iata Destino: " << vector[0]->getAirpDest()->getIata() << endl << endl;
+            //Listado con todas las fechas y estado del tiempo en las que se ha efectuado en
+            //condiciones de lluvia o chubascos
+            for (int i = 0; i < vector.size(); ++i) {
+                string datoMeteo = vector[i]->getDatoMeteo();
+                if (datoMeteo.substr(0, 9) == "Chubascos" || datoMeteo.substr(0, 6) == "Lluvia") {
+                    cout << "Fecha: " << vector[i]->getFecha().cadena().substr(0, 7)
+                         << ", Tiempo: " << datoMeteo << endl;
+                }
+
+            }
+            cout << "----------------------------------" << endl << endl;
+
+
+        } else {
+            set<string> modAVun;
+
+            //Mostrar los modelos de aviones (únicos) utilizados en vuelos operados por Vueling, VLG, el 13/4/2018
+            for (int i = 0; i < vector.size(); ++i) {
+                modAVun.insert(vector[i]->getPlane());
+            }
+            set<string>::iterator itModAVUN = modAVun.begin();
+            for (itModAVUN; itModAVUN != modAVun.end(); ++itModAVUN) {
+                cout << "Modelo de Avion : " << *itModAVUN << endl;
+            }
+
+        }
+
+    }
+};
 int main(int argc, const char * argv[]) {
 //Declaro clase VuelaFlight
     VuelaFlight vl;
+    Imprimir imprimir;
 try {
 #pragma region Ejercicio 1
     //BuscaVuelos
     cout << "----------------AEA5201----------------"  << endl;
     vector<Vuelo *> vector1 = vl.buscaVuelos("AEA5201");
     //Le pasamos vector 1 modo true modo buscaVuelos
-    vl.muestraVuelos(vector1, true);
+    imprimir.muestraVuelos(vector1, true);
     cout << "----------------VLG----------------" << endl;
     //Le pasamos vector 2 modo true modo buscaVuelos
     vector<Vuelo *> vector2 = vl.buscaVuelos("VLG2021");
-    vl.muestraVuelos(vector2, true);
+    imprimir.muestraVuelos(vector2, true);
 #pragma endregion
 #pragma region Ejercicio 2
     //Metodo BuscaAeroPor
@@ -32,7 +79,7 @@ try {
     Fecha f(13, 04, 18);
     vector<Vuelo *> vectorsito21 = vl.vuelosOperadosPor("VLG", f);
     //Le pasamos vector 2 modo false modo vuelos operados por
-    vl.muestraVuelos(vectorsito21, false);
+    imprimir.muestraVuelos(vectorsito21, false);
     cout << "----------------------------------" << endl << endl;
 #pragma endregion
 #pragma region Ejercicio 3
