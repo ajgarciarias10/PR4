@@ -7,6 +7,13 @@
 #include <string>
 #include "fecha.h"
 #include "Aeropuerto.h"
+/**
+ * @file Vuelo.h
+ * @date 20/11/2023
+ * @author Antonio José Garcia Arias, ajga001@red.ujaen.es
+ * @author Abraham Garcia Hurtado, agh00040@red.ujaen.es
+ * @brief Vuelo
+ */
 using  namespace std;
 class  Aerolinea;
 class Vuelo {

@@ -3,8 +3,8 @@
 
 using  namespace std;
 /**
- * @brief Practica 3 EEDD
- * @date 02/11/2023
+ * @brief Practica 4 EEDD
+ * @date 20/11/2023
  * @author Antonio José Garcia Arias, ajga001@red.ujaen.es
  * @author Abraham Garcia Hurtado, agh00040@red.ujaen.es
  * @param argc

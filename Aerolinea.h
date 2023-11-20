@@ -8,6 +8,13 @@
 #include <map>
 #include "Vuelo.h"
 #include "fecha.h"
+/**
+ * @file Aerolinea.h
+ * @date 20/11/2023
+ * @author Antonio José Garcia Arias, ajga001@red.ujaen.es
+ * @author Abraham Garcia Hurtado, agh00040@red.ujaen.es
+ * @brief Aerolinea
+ */
 using  namespace  std;
 class Ruta;
 class Aerolinea {
