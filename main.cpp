@@ -11,15 +11,16 @@ using  namespace std;
  * @param argv
  * @return
  */
-class Imprimir {
+
+
 /**
 * @brief Metodo que muestra todos los vuelos/
 * @post Modo True para mostrar como en Busca vuelos
 * @post Modo False para mostrar modelos de aviones en  vuelos operados por
 * @param vector
 */
-public:
-    void muestraVuelos(vector<Vuelo *> vector, bool modo) {
+
+void muestraVuelos(vector<Vuelo *> vector, bool modo) {
         if (modo) {
             //Datos de la aerolínea que los opera ( nombre completo y país al que pertenece) e iata
             //de los aeropuertos de origen, destino
@@ -56,22 +57,21 @@ public:
         }
 
     }
-};
+
 int main(int argc, const char * argv[]) {
 //Declaro clase VuelaFlight
     VuelaFlight vl;
-    Imprimir imprimir;
 try {
 #pragma region Ejercicio 1
     //BuscaVuelos
     cout << "----------------AEA5201----------------"  << endl;
     vector<Vuelo *> vector1 = vl.buscaVuelos("AEA5201");
     //Le pasamos vector 1 modo true modo buscaVuelos
-    imprimir.muestraVuelos(vector1, true);
+    muestraVuelos(vector1, true);
     cout << "----------------VLG----------------" << endl;
     //Le pasamos vector 2 modo true modo buscaVuelos
     vector<Vuelo *> vector2 = vl.buscaVuelos("VLG2021");
-    imprimir.muestraVuelos(vector2, true);
+    muestraVuelos(vector2, true);
 #pragma endregion
 #pragma region Ejercicio 2
     //Metodo BuscaAeroPor
@@ -79,7 +79,7 @@ try {
     Fecha f(13, 04, 18);
     vector<Vuelo *> vectorsito21 = vl.vuelosOperadosPor("VLG", f);
     //Le pasamos vector 2 modo false modo vuelos operados por
-    imprimir.muestraVuelos(vectorsito21, false);
+    muestraVuelos(vectorsito21, false);
     cout << "----------------------------------" << endl << endl;
 #pragma endregion
 #pragma region Ejercicio 3
